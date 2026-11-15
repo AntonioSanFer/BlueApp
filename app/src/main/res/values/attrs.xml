@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Every screen colors itself from these, so a theme only has to set them once. -->
+    <attr name="bgColor" format="color" />
+    <attr name="surfaceColor" format="color" />
+    <attr name="surface2Color" format="color" />
+    <attr name="outlineColor" format="color" />
+    <!-- Primary: buttons, selected chips, progress, focus. -->
+    <attr name="accentColor" format="color" />
+    <attr name="onAccentColor" format="color" />
+    <!-- Secondary: challenge dots, "Recommended" badge, breathing glow. -->
+    <attr name="accent2Color" format="color" />
+    <attr name="onAccent2Color" format="color" />
+    <attr name="textMain" format="color" />
+    <attr name="textDim" format="color" />
+    <attr name="goodColor" format="color" />
+    <attr name="warnColor" format="color" />
+</resources>

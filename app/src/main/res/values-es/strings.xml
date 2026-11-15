@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="tagline">Rompe el reflejo de abrir y hacer scroll.</string>
+
+    <string name="service_label">Pausa de BlueApp</string>
+    <string name="service_summary">Muestra una pausa corta antes de las apps que elegiste.</string>
+    <string name="service_description">BlueApp solo usa esto para saber qué app se acaba de abrir y mostrar una pausa antes de las apps que elegiste. No lee lo que hay en tu pantalla, no ve lo que escribes y no tiene acceso a internet: nada sale de tu móvil.</string>
+    <string name="one_minute_left">Queda 1 minuto</string>
+
+    <string name="step_of">Paso %1$d de %2$d</string>
+    <string name="welcome_title">Abre con intención,\nno por reflejo.</string>
+    <string name="welcome_body">Tu pulgar sabe dónde está TikTok antes de que decidas abrirlo. BlueApp pone una pausa corta en medio para que decidas tú.</string>
+    <string name="welcome_points">⏸  Una pausa cada vez que abres una app elegida: una cuenta atrás o un reto rápido.\n\n🎲  Cambia cada vez, así no se convierte en costumbre que saltas sin pensar.\n\n⏱  Tú eliges cuánto tiempo necesitas. Cuando se acaba, la app se cierra.\n\n🔋  Funciona por eventos, sin sondeo en segundo plano. Nada sale de tu móvil.</string>
+    <string name="get_started">Empezar</string>
+    <string name="next">Siguiente</string>
+    <string name="back">Atrás</string>
+    <string name="finish">Terminar</string>
+    <string name="done">Listo</string>
+
+    <string name="apps_title">¿Qué apps llevan pausa?</string>
+    <string name="apps_body">Toca para añadir o quitar. Los cambios se aplican al momento.</string>
+    <string name="apps_body_onboarding">Recomendamos TikTok, Instagram y YouTube, y ya están seleccionadas. Añade cualquier otra app que abras sin pensar.</string>
+    <string name="apps_body_none_installed">Recomendamos TikTok, Instagram y YouTube, pero no tienes ninguna instalada. Elige las apps que abres sin pensar.</string>
+    <string name="recommended">Recomendada</string>
+    <string name="pick_one">Elige al menos una app</string>
+    <string name="no_apps">Ninguna app seleccionada</string>
+
+    <string name="session_title">¿Cuánto puede durar una sesión?</string>
+    <string name="session_body">Después de cada pausa eliges cuánto tiempo necesitas, hasta este límite. Cuando se acaba, la app se cierra y para volver hace falta otra pausa.</string>
+    <string name="minutes_label">minutos</string>
+
+    <string name="perm_title">Un permiso, otro opcional</string>
+    <string name="perm_body">BlueApp necesita saber cuándo se abre una app elegida. Es lo único que mira.</string>
+    <string name="perm_access_name">Accesibilidad</string>
+    <string name="perm_access_desc">Solo se usa para detectar qué app acaba de pasar al frente. BlueApp no puede leer tu pantalla ni lo que escribes, y no tiene permiso de internet. En la lista, abre BlueApp → activa «Pausa de BlueApp».</string>
+    <string name="perm_restricted_hint">¿El interruptor está gris? Android lo bloquea para apps instaladas fuera de Play Store. Toca Info de la app → ⋮ (arriba a la derecha) → Permitir ajustes restringidos, y vuelve a intentarlo.</string>
+    <string name="perm_overlay_name">Mostrar sobre otras apps</string>
+    <string name="perm_overlay_desc">Opcional. Algunos móviles (Xiaomi, Oppo, Vivo, Huawei…) no dejan abrir la pausa sin esto.</string>
+    <string name="enable">Activar</string>
+    <string name="allow">Permitir</string>
+    <string name="app_info">Info de la app</string>
+    <string name="required">Necesario</string>
+    <string name="granted">✓ Activo</string>
+    <string name="finish_without_access">Las pausas no funcionarán hasta que actives Accesibilidad. Puedes hacerlo desde la pantalla principal.</string>
+
+    <string name="status_on">Protección activada</string>
+    <string name="status_off">Protección desactivada</string>
+    <string name="status_on_body">Al abrir una app protegida verás primero una pausa.</string>
+    <string name="status_off_body">Activa «Pausa de BlueApp» en los ajustes de Accesibilidad para que aparezca la pausa.</string>
+    <string name="status_no_apps">Activada, pero aún no hay apps seleccionadas.</string>
+    <string name="turn_on">Activar</string>
+    <string name="today">Hoy</string>
+    <string name="st_pauses">pausas</string>
+    <string name="st_left">veces que lo dejaste</string>
+    <string name="st_sessions">sesiones</string>
+    <string name="st_minutes">minutos concedidos</string>
+    <string name="guarded_apps">Apps protegidas</string>
+    <string name="edit_apps">Editar apps</string>
+    <string name="session_limit">Límite de sesión</string>
+    <string name="session_limit_body">Duración máxima de una sesión tras una pausa, en minutos.</string>
+    <string name="try_pause">Probar una pausa</string>
+    <string name="battery_note">Batería: BlueApp no tiene servicio en segundo plano, ni temporizadores, ni red. Android solo lo despierta cuando una app pasa al frente, y el temporizador de sesión solo existe mientras hay una sesión.</string>
+
+    <string name="opening">Abriendo %1$s</string>
+    <string name="not_now">Ahora no, llévame al inicio</string>
+    <string name="close_preview">Cerrar vista previa</string>
+    <string name="preview_note">Vista previa: no cuenta</string>
+    <string name="pause_stats">Pausa n.º %1$d hoy · lo dejaste %2$d veces</string>
+    <string name="check">Comprobar</string>
+    <string name="countdown_sub">Respira con el círculo.</string>
+    <string name="math_title">Una rápida</string>
+    <string name="math_sub">Resuélvelo para continuar.</string>
+    <string name="phrase_title">Escríbelo</string>
+    <string name="phrase_sub">Tal cual está escrito.</string>
+    <string name="reverse_title">Escríbelo al revés</string>
+    <string name="reverse_sub">Empieza por la última letra.</string>
+    <string name="taps_title">Toca del 1 al %1$d en orden</string>
+    <string name="taps_sub">Cambian de sitio cada vez.</string>
+    <string name="hold_title">Mantén pulsado %1$d segundos</string>
+    <string name="hold_sub">Si sueltas antes, empieza de nuevo.</string>
+    <string name="hold_button">Mantén</string>
+    <string name="count_title">¿Cuántos puntos hay?</string>
+    <string name="count_sub">Cuéntalos y escribe el número.</string>
+    <string name="memory_title">Recuérdalo</string>
+    <string name="memory_sub">%1$d cifras. Desaparecen en un momento.</string>
+    <string name="how_long_sub">Cuando se acabe el tiempo, %1$s se cerrará.</string>
+    <string name="time_up">Se acabó el tiempo</string>
+    <string name="time_up_sub">Llevas %1$d min en %2$s. ¿Buen momento para parar?</string>
+    <string name="close_app">Cerrar %1$s</string>
+    <string name="need_more">Necesito un poco más</string>
+
+    <string name="appearance">Apariencia</string>
+    <string name="theme">Tema</string>
+    <string name="change">Cambiar</string>
+    <string name="themes_title">Temas</string>
+    <string name="themes_body">Se aplica en toda la app, también en la pausa.</string>
+    <string name="theme_system">Sistema (Material You)</string>
+    <string name="theme_system_desc">Colores primario y secundario de tu fondo de pantalla. Sigue el modo oscuro.</string>
+    <string name="theme_needs_android12">Necesita Android 12 o superior</string>
+    <string name="theme_blue">Azul</string>
+    <string name="theme_blue_desc">El azul marino original.</string>
+    <string name="theme_amoled">Negro puro</string>
+    <string name="theme_amoled_desc">Negro real para pantallas OLED. El que menos batería gasta.</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_light_desc">Luminoso y limpio para el día.</string>
+    <string name="theme_forest">Bosque</string>
+    <string name="theme_forest_desc">Verdes tranquilos con un toque dorado.</string>
+    <string name="theme_sunset">Atardecer</string>
+    <string name="theme_sunset_desc">Coral y ámbar cálidos.</string>
+
+    <plurals name="minutes">
+        <item quantity="one">%d minuto</item>
+        <item quantity="many">%d minutos</item>
+        <item quantity="other">%d minutos</item>
+    </plurals>
+
+    <string-array name="how_long">
+        <item>¿Cuánto tiempo necesitas?</item>
+        <item>¿Cuánto tiempo vale esto?</item>
+        <item>Elige tu tiempo</item>
+        <item>Vale. ¿Durante cuánto?</item>
+    </string-array>
+
+    <string-array name="reflections">
+        <item>¿Qué esperabas encontrar?</item>
+        <item>¿Es una decisión o un reflejo?</item>
+        <item>Respira despacio una vez</item>
+        <item>¿Recordarás este scroll mañana?</item>
+        <item>¿Qué preferirías estar haciendo?</item>
+        <item>¿Cómo te sientes ahora mismo?</item>
+        <item>¿Estás evitando algo?</item>
+        <item>Fíjate en tus hombros. Relájalos.</item>
+    </string-array>
+
+    <string-array name="phrases">
+        <item>Elijo abrir esto</item>
+        <item>Lo hago a propósito</item>
+        <item>Sé a qué vengo</item>
+        <item>Solo unos minutos</item>
+        <item>Yo controlo mi tiempo</item>
+        <item>También podría salir a la calle</item>
+        <item>Aquí no me espera nada importante</item>
+        <item>Mi atención vale algo</item>
+    </string-array>
+
+    <string-array name="words">
+        <item>pausa</item>
+        <item>respira</item>
+        <item>calma</item>
+        <item>ventana</item>
+        <item>camino</item>
+        <item>planeta</item>
+        <item>silencio</item>
+        <item>mañana</item>
+        <item>montaña</item>
+        <item>equilibrio</item>
+        <item>sonrisa</item>
+        <item>tranquilo</item>
+        <item>paciencia</item>
+        <item>caminar</item>
+    </string-array>
+</resources>

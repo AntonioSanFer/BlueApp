@@ -1,0 +1,25 @@
+name: Build APK
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 17
+      # The runner image already ships the Android SDK (ANDROID_HOME, licenses accepted);
+      # Gradle fetches platform 36 / build-tools 36.0.0 itself if they're missing.
+      - uses: gradle/actions/setup-gradle@v5
+      - name: Test and build
+        run: ./gradlew testDebugUnitTest lintDebug assembleRelease --no-daemon
+      - uses: actions/upload-artifact@v5
+        with:
+          name: BlueApp-apk
+          path: app/build/outputs/apk/release/app-release.apk
