@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name" translatable="false">BlueApp</string>
+    <string name="tagline">Break the open-and-scroll reflex.</string>
+
+    <!-- Accessibility service -->
+    <string name="service_label">BlueApp pause</string>
+    <string name="service_summary">Shows a short pause before the apps you picked.</string>
+    <string name="service_description">BlueApp only uses this to know which app just opened, so it can show a pause before the apps you chose. It does not read what is on your screen, does not see what you type, and has no internet access, so nothing ever leaves your phone.</string>
+    <string name="one_minute_left">1 minute left</string>
+
+    <!-- Onboarding -->
+    <string name="step_of">Step %1$d of %2$d</string>
+    <string name="welcome_title">Open on purpose,\nnot by reflex.</string>
+    <string name="welcome_body">Your thumb knows where TikTok is before you\'ve decided to open it. BlueApp puts a short pause in the way so you get to decide.</string>
+    <string name="welcome_points">⏸  A pause every time you open a chosen app: a countdown or a quick challenge.\n\n🎲  It\'s different every time, so it can\'t become a habit you tap through.\n\n⏱  You choose how long you need. When time\'s up, the app closes.\n\n🔋  Event driven, no background polling. Nothing leaves your phone.</string>
+    <string name="get_started">Get started</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
+    <string name="finish">Finish</string>
+    <string name="done">Done</string>
+
+    <string name="apps_title">Which apps get a pause?</string>
+    <string name="apps_body">Tap to add or remove. Changes apply right away.</string>
+    <string name="apps_body_onboarding">TikTok, Instagram and YouTube are recommended and already selected. Add any other app you open without thinking.</string>
+    <string name="apps_body_none_installed">We recommend TikTok, Instagram and YouTube, but none are installed. Pick the apps you open without thinking.</string>
+    <string name="recommended">Recommended</string>
+    <string name="pick_one">Pick at least one app</string>
+    <string name="no_apps">No apps selected</string>
+
+    <string name="session_title">How long can one session last?</string>
+    <string name="session_body">After each pause you choose how long you need, up to this limit. When it runs out, the app closes and the next round needs a new pause.</string>
+    <string name="minutes_label">minutes</string>
+
+    <string name="perm_title">One permission, one optional</string>
+    <string name="perm_body">BlueApp needs to know when a chosen app opens. That\'s all it looks at.</string>
+    <string name="perm_access_name">Accessibility</string>
+    <string name="perm_access_desc">Used only to detect which app just came to the front. BlueApp can\'t read your screen or what you type, and it has no internet permission. In the list, open BlueApp → turn on “BlueApp pause”.</string>
+    <string name="perm_restricted_hint">Switch greyed out? Android blocks this for apps installed outside the Play Store. Tap App info → ⋮ (top right) → Allow restricted settings, then try again.</string>
+    <string name="perm_overlay_name">Display over other apps</string>
+    <string name="perm_overlay_desc">Optional. Some phones (Xiaomi, Oppo, Vivo, Huawei…) won\'t let the pause screen open without it.</string>
+    <string name="enable">Enable</string>
+    <string name="allow">Allow</string>
+    <string name="app_info">App info</string>
+    <string name="required">Required</string>
+    <string name="granted">✓ On</string>
+    <string name="finish_without_access">Pauses stay off until Accessibility is enabled. You can turn it on from the home screen.</string>
+
+    <!-- Dashboard -->
+    <string name="status_on">Protection is on</string>
+    <string name="status_off">Protection is off</string>
+    <string name="status_on_body">Opening a guarded app will show a pause first.</string>
+    <string name="status_off_body">Enable “BlueApp pause” in Accessibility settings so the pause can appear.</string>
+    <string name="status_no_apps">On, but no apps are selected yet.</string>
+    <string name="turn_on">Turn on</string>
+    <string name="today">Today</string>
+    <string name="st_pauses">pauses</string>
+    <string name="st_left">times you walked away</string>
+    <string name="st_sessions">sessions</string>
+    <string name="st_minutes">minutes allowed</string>
+    <string name="guarded_apps">Guarded apps</string>
+    <string name="edit_apps">Edit apps</string>
+    <string name="session_limit">Session limit</string>
+    <string name="session_limit_body">Longest single session after a pause, in minutes.</string>
+    <string name="try_pause">Try a pause now</string>
+    <string name="battery_note">Battery: BlueApp has no background service, timers or network. Android only wakes it when an app comes to the front, and the session timer exists only while a session is running.</string>
+
+    <!-- Pause screen -->
+    <string name="opening">Opening %1$s</string>
+    <string name="not_now">Not now, take me home</string>
+    <string name="close_preview">Close preview</string>
+    <string name="preview_note">Preview: nothing is counted</string>
+    <string name="pause_stats">Pause #%1$d today · walked away %2$d times</string>
+    <string name="check">Check</string>
+    <string name="countdown_sub">Breathe with the circle.</string>
+    <string name="math_title">Quick one</string>
+    <string name="math_sub">Solve it to continue.</string>
+    <string name="phrase_title">Type it out</string>
+    <string name="phrase_sub">Exactly as written.</string>
+    <string name="reverse_title">Spell it backwards</string>
+    <string name="reverse_sub">Last letter first.</string>
+    <string name="taps_title">Tap 1 to %1$d in order</string>
+    <string name="taps_sub">They move every time.</string>
+    <string name="hold_title">Hold for %1$d seconds</string>
+    <string name="hold_sub">Let go early and it starts over.</string>
+    <string name="hold_button">Hold</string>
+    <string name="count_title">How many dots?</string>
+    <string name="count_sub">Count them, then type the number.</string>
+    <string name="memory_title">Remember this</string>
+    <string name="memory_sub">%1$d digits. They disappear in a moment.</string>
+    <string name="how_long_sub">When time\'s up, %1$s closes.</string>
+    <string name="time_up">Time\'s up</string>
+    <string name="time_up_sub">You spent %1$d min on %2$s. Good moment to stop?</string>
+    <string name="close_app">Close %1$s</string>
+    <string name="need_more">I need a bit more</string>
+
+    <plurals name="minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+
+    <string-array name="how_long">
+        <item>How long do you need?</item>
+        <item>How much time is this worth?</item>
+        <item>Pick your time</item>
+        <item>Okay. For how long?</item>
+    </string-array>
+
+    <string-array name="reflections">
+        <item>What were you hoping to find?</item>
+        <item>Is this a choice or a reflex?</item>
+        <item>Take one slow breath</item>
+        <item>Will you remember this scroll tomorrow?</item>
+        <item>What would you rather be doing?</item>
+        <item>How do you feel right now?</item>
+        <item>Is there something you\'re avoiding?</item>
+        <item>Notice your shoulders. Relax them.</item>
+    </string-array>
+
+    <string-array name="phrases">
+        <item>I choose to open this</item>
+        <item>This is on purpose</item>
+        <item>I know what I came here for</item>
+        <item>Just a few minutes</item>
+        <item>I am in control of my time</item>
+        <item>I could also go outside</item>
+        <item>Nothing important is waiting here</item>
+        <item>My attention is worth something</item>
+    </string-array>
+
+    <string-array name="words">
+        <item>pause</item>
+        <item>breathe</item>
+        <item>focus</item>
+        <item>window</item>
+        <item>garden</item>
+        <item>planet</item>
+        <item>silence</item>
+        <item>morning</item>
+        <item>journey</item>
+        <item>balance</item>
+        <item>mountain</item>
+        <item>sunlight</item>
+        <item>thoughtful</item>
+        <item>attention</item>
+    </string-array>
+</resources>
