@@ -41,6 +41,10 @@ Dashboard → **Settings › Theme**. Each option previews in its own colors and
 | Accessibility (required) | To know which app just opened. It can't read your screen or your typing. |
 | Display over other apps (optional) | Some OEM skins (Xiaomi, Oppo, Vivo, Huawei) block the pause screen without it. |
 
+## Download
+
+The latest build of `main` is always at **[Releases › Nightly](../../releases/tag/nightly)** (`BlueApp-nightly.apk`). It's rebuilt and replaced on every push to `main`.
+
 ## Installing (Play Protect says "App blocked to protect your device")
 
 Google Play Protect blocks *sideloaded* apps that declare an Accessibility service when they are installed from a browser, chat app or file manager. It's a blanket anti-fraud rule, not a finding about this app. BlueApp has no internet permission, so it can't send anything anywhere. Ways in:
@@ -58,7 +62,7 @@ Google Play Protect blocks *sideloaded* apps that declare an Accessibility servi
 ./gradlew testDebugUnitTest      # session-rule tests
 ```
 
-Requires JDK 17+ and the Android SDK (platform 36, build-tools 36.0.0). Every push also builds the APK on GitHub Actions (download it from the run's *Artifacts*).
+Requires JDK 17+ and the Android SDK (platform 36, build-tools 36.0.0). Every push also builds the APK on GitHub Actions (download it from the run's *Artifacts*), and pushes to `main` update the Nightly release.
 
 The release build is signed with the debug key so it installs directly. Use your own signing config before distributing it.
 

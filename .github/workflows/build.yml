@@ -5,9 +5,16 @@ on:
   pull_request:
   workflow_dispatch:
 
+# A newer push to the same branch supersedes an older run (and its nightly upload).
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # needed to publish the nightly release
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-java@v5
@@ -23,3 +30,24 @@ jobs:
         with:
           name: BlueApp-apk
           path: app/build/outputs/apk/release/app-release.apk
+
+      # Every successful build of main replaces the "nightly" pre-release with the new APK,
+      # so https://github.com/<owner>/<repo>/releases/tag/nightly always has the latest one.
+      - name: Publish nightly release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          short="${GITHUB_SHA::7}"
+          cp app/build/outputs/apk/release/app-release.apk BlueApp-nightly.apk
+          # Drop the old release and its tag, then recreate both on this commit.
+          gh release delete nightly --yes --cleanup-tag || true
+          gh release create nightly BlueApp-nightly.apk \
+            --prerelease \
+            --target "$GITHUB_SHA" \
+            --title "Nightly ($short)" \
+            --notes "Latest build of \`main\` at ${short}, built $(date -u '+%Y-%m-%d %H:%M UTC').
+
+          Install \`BlueApp-nightly.apk\` on your phone. Play Protect blocks sideloaded apps that use an Accessibility service, so install it with \`adb install\` or pause Play Protect while installing (see the README).
+
+          This release is replaced on every push to \`main\`."
