@@ -122,6 +122,7 @@
         <item quantity="many">Activado · pausando %d apps</item>
         <item quantity="other">Activado · pausando %d apps</item>
     </plurals>
+    <string name="github">Código fuente en GitHub</string>
     <plurals name="minutes">
         <item quantity="one">%d minuto</item>
         <item quantity="many">%d minutos</item>
