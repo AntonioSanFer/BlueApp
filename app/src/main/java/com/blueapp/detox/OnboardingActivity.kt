@@ -42,7 +42,7 @@ class OnboardingActivity : ThemedActivity() {
         }
 
         // Session length
-        Ui.minuteChips(findViewById(R.id.choices), prefs.maxSessionMin) { prefs.maxSessionMin = it }
+        Ui.timeOptionsList(findViewById(R.id.time_group), prefs)
 
         // Permissions
         setupPermCards()
@@ -73,10 +73,9 @@ class OnboardingActivity : ThemedActivity() {
     private fun render() {
         val i = flipper.displayedChild
         step.text = getString(R.string.step_of, i + 1, flipper.childCount)
-        back.visibility = if (i == 0) View.INVISIBLE else View.VISIBLE
+        back.visibility = if (i == 0) View.GONE else View.VISIBLE
         next.setText(
             when (i) {
-                0 -> R.string.get_started
                 flipper.childCount - 1 -> R.string.finish
                 else -> R.string.next
             }

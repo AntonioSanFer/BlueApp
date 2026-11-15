@@ -4,10 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 
-/** Dashboard: is protection on, today's numbers, which apps, how long a session may last. */
+/** Dashboard: status, today's numbers, settings, pause type. */
 class MainActivity : ThemedActivity() {
+
+    private lateinit var appsValue: TextView
+    private lateinit var timeValue: TextView
+    private lateinit var themeValue: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,9 +24,6 @@ class MainActivity : ThemedActivity() {
         setContentView(R.layout.activity_main)
 
         findViewById<Button>(R.id.status_fix).setOnClickListener { Ui.openAccessibilitySettings(this) }
-        findViewById<Button>(R.id.edit_apps).setOnClickListener {
-            startActivity(Intent(this, AppsActivity::class.java))
-        }
         findViewById<Button>(R.id.preview).setOnClickListener {
             startActivity(
                 Intent(this, InterceptActivity::class.java)
@@ -29,41 +31,57 @@ class MainActivity : ThemedActivity() {
                     .putExtra(InterceptActivity.EXTRA_PKG, prefs.targets.firstOrNull() ?: packageName)
             )
         }
-        findViewById<Button>(R.id.theme).setOnClickListener {
-            startActivity(Intent(this, ThemesActivity::class.java))
-        }
-        Ui.minuteChips(findViewById(R.id.choices), prefs.maxSessionMin) { prefs.maxSessionMin = it }
+
+        val settings = findViewById<LinearLayout>(R.id.settings)
+        appsValue = Ui.navRow(settings, getString(R.string.apps), null) { open(AppsActivity::class.java) }
+        timeValue = Ui.navRow(settings, getString(R.string.time_options), null) { open(TimeOptionsActivity::class.java) }
+        themeValue = Ui.navRow(settings, getString(R.string.theme), null) { open(ThemesActivity::class.java) }
+
+        Ui.segmented(
+            findViewById(R.id.pause_modes),
+            listOf(
+                Prefs.MODE_TIMER to getString(R.string.mode_timer),
+                Prefs.MODE_CHALLENGE to getString(R.string.mode_challenge),
+                Prefs.MODE_BOTH to getString(R.string.mode_both),
+            ),
+            prefs.pauseMode,
+        ) { prefs.pauseMode = it; updateModeHint() }
+        updateModeHint()
+    }
+
+    private fun open(c: Class<*>) = startActivity(Intent(this, c))
+
+    private fun updateModeHint() {
+        findViewById<TextView>(R.id.pause_mode_hint).setText(
+            when (prefs.pauseMode) {
+                Prefs.MODE_TIMER -> R.string.mode_timer_desc
+                Prefs.MODE_CHALLENGE -> R.string.mode_challenge_desc
+                else -> R.string.mode_both_desc
+            }
+        )
     }
 
     override fun onResume() {
         super.onResume()
-        if (!prefs.onboarded) return
+        if (!prefs.onboarded || isFinishing) return
 
         val on = Prefs.isServiceEnabled(this)
         val targets = prefs.targets
-        findViewById<TextView>(R.id.status_title).apply {
-            setText(if (on) R.string.status_on else R.string.status_off)
-            setTextColor(attrColor(if (on) R.attr.goodColor else R.attr.warnColor))
-        }
-        findViewById<TextView>(R.id.status_body).text = when {
-            !on -> getString(R.string.status_off_body)
-            targets.isEmpty() -> getString(R.string.status_no_apps)
-            else -> getString(R.string.status_on_body)
+        findViewById<TextView>(R.id.status).apply {
+            text = when {
+                !on -> getString(R.string.status_off)
+                else -> resources.getQuantityString(R.plurals.status_on, targets.size, targets.size)
+            }
+            setTextColor(attrColor(if (on) R.attr.textDim else R.attr.warnColor))
         }
         findViewById<View>(R.id.status_fix).visibility = if (on) View.GONE else View.VISIBLE
 
-        stat(R.id.st_pauses, prefs.stat(Prefs.S_PAUSES), R.string.st_pauses)
-        stat(R.id.st_left, prefs.stat(Prefs.S_LEFT), R.string.st_left)
-        stat(R.id.st_sessions, prefs.stat(Prefs.S_SESSIONS), R.string.st_sessions)
-        stat(R.id.st_minutes, prefs.stat(Prefs.S_MINUTES), R.string.st_minutes)
+        findViewById<TextView>(R.id.st_pauses).text = prefs.stat(Prefs.S_PAUSES).toString()
+        findViewById<TextView>(R.id.st_left).text = prefs.stat(Prefs.S_LEFT).toString()
+        findViewById<TextView>(R.id.st_minutes).text = getString(R.string.minutes_short, prefs.stat(Prefs.S_MINUTES))
 
-        findViewById<TextView>(R.id.apps_summary).text = Ui.appSummary(this, targets)
-        findViewById<TextView>(R.id.theme_name).setText(Themes.current(prefs).name)
-    }
-
-    private fun stat(id: Int, value: Int, label: Int) {
-        val cell = findViewById<View>(id)
-        cell.findViewById<TextView>(R.id.value).text = value.toString()
-        cell.findViewById<TextView>(R.id.name).setText(label)
+        appsValue.text = Ui.appSummary(this, targets)
+        timeValue.text = Ui.timeOptionsSummary(this, prefs.timeOptions)
+        themeValue.setText(Themes.current(prefs).name)
     }
 }

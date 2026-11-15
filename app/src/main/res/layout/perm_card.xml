@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="?attr/textMain"
-            android:textSize="17sp"
+            android:textSize="16sp"
             android:fontFamily="sans-serif-medium" />
 
         <TextView
@@ -53,12 +53,14 @@
         <Button
             android:id="@+id/perm_grant"
             style="@style/Primary"
+            android:minHeight="44dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/perm_extra"
             style="@style/Secondary"
+            android:minHeight="44dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
