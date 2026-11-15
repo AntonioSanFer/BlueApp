@@ -6,19 +6,21 @@
         <item name="android:colorPrimary">?attr/accentColor</item>
         <item name="android:colorAccent">?attr/accentColor</item>
         <item name="android:colorControlActivated">?attr/accentColor</item>
+        <item name="android:colorControlNormal">?attr/textDim</item>
         <item name="android:windowBackground">?attr/bgColor</item>
         <item name="android:statusBarColor">?attr/bgColor</item>
         <item name="android:navigationBarColor">?attr/bgColor</item>
         <item name="android:textColorPrimary">?attr/textMain</item>
         <item name="android:textColorSecondary">?attr/textDim</item>
-        <item name="goodColor">#47D18C</item>
-        <item name="warnColor">#FFB547</item>
+        <item name="goodColor">#7BC59A</item>
+        <item name="warnColor">#E0B36A</item>
     </style>
 
     <style name="Base.App.Light" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:colorPrimary">?attr/accentColor</item>
         <item name="android:colorAccent">?attr/accentColor</item>
         <item name="android:colorControlActivated">?attr/accentColor</item>
+        <item name="android:colorControlNormal">?attr/textDim</item>
         <item name="android:windowBackground">?attr/bgColor</item>
         <item name="android:statusBarColor">?attr/bgColor</item>
         <item name="android:navigationBarColor">?attr/bgColor</item>
@@ -26,77 +28,77 @@
         <item name="android:textColorSecondary">?attr/textDim</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
-        <item name="goodColor">#1E9E5A</item>
-        <item name="warnColor">#B86E00</item>
+        <item name="goodColor">#2E7D4F</item>
+        <item name="warnColor">#9A6200</item>
     </style>
 
-    <!-- ===== Palettes ===== -->
+    <!-- ===== Palettes: neutral grounds, one muted accent used sparingly. ===== -->
 
-    <!-- Default: deep navy with a bright blue. -->
+    <!-- Default: graphite with a faint blue tint. -->
     <style name="Theme.App.Blue" parent="Base.App.Dark">
-        <item name="bgColor">#0B1220</item>
-        <item name="surfaceColor">#141E33</item>
-        <item name="surface2Color">#1C2942</item>
-        <item name="outlineColor">#2A3A5C</item>
-        <item name="accentColor">#4C8DFF</item>
-        <item name="onAccentColor">#FFFFFF</item>
-        <item name="accent2Color">#7FD3FF</item>
-        <item name="onAccent2Color">#06283D</item>
-        <item name="textMain">#EAF0FF</item>
-        <item name="textDim">#93A3C4</item>
+        <item name="bgColor">#111317</item>
+        <item name="surfaceColor">#1A1C21</item>
+        <item name="surface2Color">#25282E</item>
+        <item name="outlineColor">#2C2F35</item>
+        <item name="accentColor">#A9B8D8</item>
+        <item name="onAccentColor">#111317</item>
+        <item name="accent2Color">#8E99B3</item>
+        <item name="onAccent2Color">#111317</item>
+        <item name="textMain">#E8E9EC</item>
+        <item name="textDim">#9FA2A9</item>
     </style>
 
     <!-- True black: OLED pixels switched off, the most battery-friendly option. -->
     <style name="Theme.App.Amoled" parent="Base.App.Dark">
         <item name="bgColor">#000000</item>
-        <item name="surfaceColor">#0D0D10</item>
-        <item name="surface2Color">#17171C</item>
-        <item name="outlineColor">#25252C</item>
-        <item name="accentColor">#8AB4FF</item>
-        <item name="onAccentColor">#071A3D</item>
-        <item name="accent2Color">#C6A8FF</item>
-        <item name="onAccent2Color">#1F0D45</item>
-        <item name="textMain">#F2F2F5</item>
-        <item name="textDim">#9A9AA6</item>
+        <item name="surfaceColor">#121214</item>
+        <item name="surface2Color">#1D1D20</item>
+        <item name="outlineColor">#26262A</item>
+        <item name="accentColor">#A9B8D8</item>
+        <item name="onAccentColor">#000000</item>
+        <item name="accent2Color">#8E99B3</item>
+        <item name="onAccent2Color">#000000</item>
+        <item name="textMain">#EDEDF0</item>
+        <item name="textDim">#9A9AA2</item>
     </style>
 
     <style name="Theme.App.Light" parent="Base.App.Light">
-        <item name="bgColor">#F5F7FB</item>
+        <item name="bgColor">#F4F5F7</item>
         <item name="surfaceColor">#FFFFFF</item>
-        <item name="surface2Color">#EDF1F8</item>
-        <item name="outlineColor">#D5DCE8</item>
-        <item name="accentColor">#2F6BEA</item>
+        <item name="surface2Color">#E9EBEF</item>
+        <item name="outlineColor">#DCDFE4</item>
+        <item name="accentColor">#3D5A99</item>
         <item name="onAccentColor">#FFFFFF</item>
-        <item name="accent2Color">#0E8FB8</item>
+        <item name="accent2Color">#5E6E8F</item>
         <item name="onAccent2Color">#FFFFFF</item>
-        <item name="textMain">#111827</item>
-        <item name="textDim">#5B6476</item>
+        <item name="textMain">#16181D</item>
+        <item name="textDim">#5E636D</item>
     </style>
 
     <style name="Theme.App.Forest" parent="Base.App.Dark">
-        <item name="bgColor">#0C1511</item>
-        <item name="surfaceColor">#13211A</item>
-        <item name="surface2Color">#1A2C23</item>
-        <item name="outlineColor">#2A4236</item>
-        <item name="accentColor">#4CC38A</item>
-        <item name="onAccentColor">#03150C</item>
-        <item name="accent2Color">#E3C45C</item>
-        <item name="onAccent2Color">#2A2000</item>
-        <item name="textMain">#E7F3EC</item>
-        <item name="textDim">#93AE9F</item>
+        <item name="bgColor">#0F1412</item>
+        <item name="surfaceColor">#171D1A</item>
+        <item name="surface2Color">#212924</item>
+        <item name="outlineColor">#29322D</item>
+        <item name="accentColor">#9DC3AE</item>
+        <item name="onAccentColor">#0F1412</item>
+        <item name="accent2Color">#8AA597</item>
+        <item name="onAccent2Color">#0F1412</item>
+        <item name="textMain">#E6ECE8</item>
+        <item name="textDim">#98A49D</item>
     </style>
 
     <style name="Theme.App.Sunset" parent="Base.App.Dark">
-        <item name="bgColor">#1A0F14</item>
-        <item name="surfaceColor">#25161D</item>
-        <item name="surface2Color">#311F28</item>
-        <item name="outlineColor">#48303B</item>
-        <item name="accentColor">#FF7A59</item>
-        <item name="onAccentColor">#2A0A00</item>
-        <item name="accent2Color">#FFC15E</item>
-        <item name="onAccent2Color">#2E1A00</item>
-        <item name="textMain">#FBEDEF</item>
-        <item name="textDim">#C2A3AA</item>
+        <item name="bgColor">#161112</item>
+        <item name="surfaceColor">#1E1719</item>
+        <item name="surface2Color">#2A2224</item>
+        <item name="outlineColor">#32292B</item>
+        <item name="accentColor">#D9AFA0</item>
+        <item name="onAccentColor">#161112</item>
+        <item name="accent2Color">#B79A90</item>
+        <item name="onAccent2Color">#161112</item>
+        <item name="textMain">#EFE7E5</item>
+        <item name="textDim">#A99D9B</item>
     </style>
 
     <!-- Applied on top of any palette for the pause screen. -->
@@ -108,48 +110,83 @@
 
     <style name="Title">
         <item name="android:textColor">?attr/textMain</item>
-        <item name="android:textSize">26sp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:lineSpacingMultiplier">1.15</item>
     </style>
 
     <style name="Body">
         <item name="android:textColor">?attr/textDim</item>
-        <item name="android:textSize">16sp</item>
-        <item name="android:lineSpacingMultiplier">1.2</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:lineSpacingMultiplier">1.25</item>
     </style>
 
+    <!-- Small grey label above a group, sentence case. -->
     <style name="Section">
         <item name="android:textColor">?attr/textDim</item>
         <item name="android:textSize">13sp</item>
-        <item name="android:textAllCaps">true</item>
-        <item name="android:letterSpacing">0.08</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:paddingStart">4dp</item>
     </style>
 
+    <!-- Main action: plain light-on-dark (or dark-on-light) button. -->
     <style name="Primary" parent="android:Widget.Material.Button">
         <item name="android:background">@drawable/btn_primary</item>
-        <item name="android:textColor">?attr/onAccentColor</item>
+        <item name="android:textColor">?attr/bgColor</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">16sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
         <item name="android:minHeight">52dp</item>
-        <item name="android:paddingStart">24dp</item>
-        <item name="android:paddingEnd">24dp</item>
-        <item name="android:stateListAnimator">@null</item>
-    </style>
-
-    <style name="Secondary" parent="android:Widget.Material.Button">
-        <item name="android:background">@drawable/btn_secondary</item>
-        <item name="android:textColor">?attr/textMain</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:minHeight">48dp</item>
         <item name="android:paddingStart">20dp</item>
         <item name="android:paddingEnd">20dp</item>
         <item name="android:stateListAnimator">@null</item>
     </style>
 
+    <!-- Secondary action: outlined. -->
+    <style name="Secondary" parent="android:Widget.Material.Button">
+        <item name="android:background">@drawable/btn_secondary</item>
+        <item name="android:textColor">?attr/textMain</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="android:paddingStart">18dp</item>
+        <item name="android:paddingEnd">18dp</item>
+        <item name="android:stateListAnimator">@null</item>
+    </style>
+
+    <!-- Text-only action in the accent color. -->
+    <style name="Link" parent="android:Widget.Material.Button.Borderless">
+        <item name="android:textColor">?attr/accentColor</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:minHeight">48dp</item>
+    </style>
+
+    <style name="StatValue">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?attr/textMain</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFeatureSettings">tnum</item>
+    </style>
+
+    <style name="StatLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:textColor">?attr/textDim</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <!-- Padded content card. -->
     <style name="Card">
         <item name="android:background">@drawable/card</item>
-        <item name="android:padding">18dp</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <!-- Card holding a list of rows (rows bring their own padding and dividers). -->
+    <style name="Group">
+        <item name="android:background">@drawable/card</item>
     </style>
 </resources>

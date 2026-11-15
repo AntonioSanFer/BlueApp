@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name" translatable="false">BlueApp</string>
-    <string name="tagline">Break the open-and-scroll reflex.</string>
 
     <!-- Accessibility service -->
     <string name="service_label">BlueApp pause</string>
@@ -11,14 +10,11 @@
 
     <!-- Onboarding -->
     <string name="step_of">Step %1$d of %2$d</string>
-    <string name="welcome_title">Open on purpose,\nnot by reflex.</string>
-    <string name="welcome_body">Your thumb knows where TikTok is before you\'ve decided to open it. BlueApp puts a short pause in the way so you get to decide.</string>
-    <string name="welcome_points">⏸  A pause every time you open a chosen app: a countdown or a quick challenge.\n\n🎲  It\'s different every time, so it can\'t become a habit you tap through.\n\n⏱  You choose how long you need. When time\'s up, the app closes.\n\n🔋  Event driven, no background polling. Nothing leaves your phone.</string>
-    <string name="get_started">Get started</string>
-    <string name="next">Next</string>
+    <string name="welcome_title">Open apps on purpose</string>
+    <string name="welcome_body">BlueApp adds a short pause before the apps you open out of habit, and a time limit once you\'re in.</string>
+    <string name="next">Continue</string>
     <string name="back">Back</string>
     <string name="finish">Finish</string>
-    <string name="done">Done</string>
 
     <string name="apps_title">Which apps get a pause?</string>
     <string name="apps_body">Tap to add or remove. Changes apply right away.</string>
@@ -28,9 +24,8 @@
     <string name="pick_one">Pick at least one app</string>
     <string name="no_apps">No apps selected</string>
 
-    <string name="session_title">How long can one session last?</string>
-    <string name="session_body">After each pause you choose how long you need, up to this limit. When it runs out, the app closes and the next round needs a new pause.</string>
-    <string name="minutes_label">minutes</string>
+    <string name="session_title">Time options</string>
+    <string name="session_body">Pick up to 4 lengths. After each pause you choose one of them, and the longest is your limit per session.</string>
 
     <string name="perm_title">One permission, one optional</string>
     <string name="perm_body">BlueApp needs to know when a chosen app opens. That\'s all it looks at.</string>
@@ -47,32 +42,21 @@
     <string name="finish_without_access">Pauses stay off until Accessibility is enabled. You can turn it on from the home screen.</string>
 
     <!-- Dashboard -->
-    <string name="status_on">Protection is on</string>
-    <string name="status_off">Protection is off</string>
-    <string name="status_on_body">Opening a guarded app will show a pause first.</string>
-    <string name="status_off_body">Enable “BlueApp pause” in Accessibility settings so the pause can appear.</string>
-    <string name="status_no_apps">On, but no apps are selected yet.</string>
+    <string name="status_off">Off. Pauses can\'t appear until Accessibility is on.</string>
     <string name="turn_on">Turn on</string>
     <string name="today">Today</string>
-    <string name="st_pauses">pauses</string>
-    <string name="st_left">times you walked away</string>
-    <string name="st_sessions">sessions</string>
-    <string name="st_minutes">minutes allowed</string>
-    <string name="guarded_apps">Guarded apps</string>
-    <string name="edit_apps">Edit apps</string>
-    <string name="session_limit">Session limit</string>
-    <string name="session_limit_body">Longest single session after a pause, in minutes.</string>
-    <string name="try_pause">Try a pause now</string>
-    <string name="battery_note">Battery: BlueApp has no background service, timers or network. Android only wakes it when an app comes to the front, and the session timer exists only while a session is running.</string>
+    <string name="st_pauses">Pauses</string>
+    <string name="st_left">Skipped</string>
+    <string name="st_minutes">Allowed</string>
+    <string name="try_pause">Preview a pause</string>
 
     <!-- Pause screen -->
     <string name="opening">Opening %1$s</string>
-    <string name="not_now">Not now, take me home</string>
+    <string name="not_now">Not now</string>
     <string name="close_preview">Close preview</string>
     <string name="preview_note">Preview: nothing is counted</string>
-    <string name="pause_stats">Pause #%1$d today · walked away %2$d times</string>
+    <string name="pause_stats">Pause %1$d today</string>
     <string name="check">Check</string>
-    <string name="countdown_sub">Breathe with the circle.</string>
     <string name="math_title">Quick one</string>
     <string name="math_sub">Solve it to continue.</string>
     <string name="phrase_title">Type it out</string>
@@ -80,7 +64,7 @@
     <string name="reverse_title">Spell it backwards</string>
     <string name="reverse_sub">Last letter first.</string>
     <string name="taps_title">Tap 1 to %1$d in order</string>
-    <string name="taps_sub">They move every time.</string>
+    <string name="taps_sub">The numbers move each time.</string>
     <string name="hold_title">Hold for %1$d seconds</string>
     <string name="hold_sub">Let go early and it starts over.</string>
     <string name="hold_button">Hold</string>
@@ -88,41 +72,62 @@
     <string name="count_sub">Count them, then type the number.</string>
     <string name="memory_title">Remember this</string>
     <string name="memory_sub">%1$d digits. They disappear in a moment.</string>
-    <string name="how_long_sub">When time\'s up, %1$s closes.</string>
+    <string name="how_long_sub">%1$s closes when the time is up.</string>
     <string name="time_up">Time\'s up</string>
-    <string name="time_up_sub">You spent %1$d min on %2$s. Good moment to stop?</string>
+    <string name="time_up_sub">You\'ve used %2$s for %1$d minutes.</string>
     <string name="close_app">Close %1$s</string>
-    <string name="need_more">I need a bit more</string>
+    <string name="need_more">I need more time</string>
 
     <!-- Themes -->
-    <string name="appearance">Appearance</string>
     <string name="theme">Theme</string>
-    <string name="change">Change</string>
-    <string name="themes_title">Themes</string>
-    <string name="themes_body">Applies everywhere, including the pause screen.</string>
-    <string name="theme_system">System (Material You)</string>
-    <string name="theme_system_desc">Primary and secondary colours from your wallpaper. Follows dark mode.</string>
+    <string name="theme_system">System</string>
+    <string name="theme_system_desc">Matches your wallpaper and dark mode</string>
     <string name="theme_needs_android12">Needs Android 12 or newer</string>
     <string name="theme_blue">Blue</string>
-    <string name="theme_blue_desc">The original deep navy.</string>
-    <string name="theme_amoled">Pure black</string>
-    <string name="theme_amoled_desc">True black for OLED screens. Easiest on the battery.</string>
+    <string name="theme_blue_desc">Default</string>
+    <string name="theme_amoled">Black</string>
+    <string name="theme_amoled_desc">True black, best for OLED battery</string>
     <string name="theme_light">Light</string>
-    <string name="theme_light_desc">Bright and clean for daytime.</string>
+    <string name="theme_light_desc">For daytime</string>
     <string name="theme_forest">Forest</string>
-    <string name="theme_forest_desc">Calm greens with a warm gold.</string>
+    <string name="theme_forest_desc">Dark green</string>
     <string name="theme_sunset">Sunset</string>
-    <string name="theme_sunset_desc">Warm coral and amber.</string>
+    <string name="theme_sunset_desc">Dark warm</string>
 
     <!-- Pause style -->
-    <string name="pause_style">Pause style</string>
+    <string name="pause_style">Pause type</string>
     <string name="mode_timer">Timer</string>
     <string name="mode_challenge">Challenge</string>
     <string name="mode_both">Both</string>
     <string name="mode_timer_desc">Always a breathing countdown, a different length each time.</string>
     <string name="mode_challenge_desc">Always a quick challenge, a different one each time.</string>
-    <string name="mode_both_desc">A random mix of countdowns and challenges. Hardest to get used to.</string>
+    <string name="mode_both_desc">Mixes countdowns and challenges so it never feels the same.</string>
 
+    <string name="point1_title">A pause before you scroll</string>
+    <string name="point1_body">A short countdown or task. It\'s different every time.</string>
+    <string name="point2_title">A limit you choose</string>
+    <string name="point2_body">Pick how long you need. The app closes when it\'s over.</string>
+    <string name="point3_title">Stays on your phone</string>
+    <string name="point3_body">No account, no internet access, no tracking.</string>
+    <string name="apps">Apps</string>
+    <string name="settings">Settings</string>
+    <string name="time_options">Time options</string>
+    <string name="time_options_intro">The lengths offered after each pause, when you\'re asked how long you need. Pick up to 4.</string>
+    <string name="time_options_foot">Your longest option, %1$d min, is the most a single session can last.</string>
+    <string name="time_options_summary">%1$s min</string>
+    <string name="time_options_max">You can pick up to %1$d</string>
+    <string name="time_options_min">Keep at least one</string>
+    <string name="theme_footnote">System uses the colours from your wallpaper on Android 12 and later.</string>
+    <string name="minutes_short">%1$dm</string>
+    <string name="time_up_foot">More time means another pause first.</string>
+    <string name="until_time">until %1$s</string>
+    <string name="breathe_in">Breathe in</string>
+    <string name="breathe_out">Breathe out</string>
+    <string name="taps_progress">%1$d of %2$d</string>
+    <plurals name="status_on">
+        <item quantity="one">On · pausing %d app</item>
+        <item quantity="other">On · pausing %d apps</item>
+    </plurals>
     <plurals name="minutes">
         <item quantity="one">%d minute</item>
         <item quantity="other">%d minutes</item>

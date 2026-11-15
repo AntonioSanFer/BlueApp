@@ -4,13 +4,17 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:paddingStart="20dp"
+    android:paddingTop="32dp"
+    android:paddingEnd="20dp"
+    android:paddingBottom="16dp">
 
     <TextView
         style="@style/Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/apps_title" />
+        android:text="@string/apps"
+        android:textSize="26sp" />
 
     <TextView
         style="@style/Body"
@@ -21,17 +25,12 @@
 
     <ListView
         android:id="@+id/list"
+        style="@style/Group"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="20dp"
         android:layout_weight="1"
-        android:divider="@null" />
-
-    <Button
-        android:id="@+id/done"
-        style="@style/Primary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="@string/done" />
+        android:divider="?attr/outlineColor"
+        android:dividerHeight="1px"
+        android:listSelector="@drawable/row_bg" />
 </LinearLayout>

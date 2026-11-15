@@ -102,12 +102,14 @@ class SessionTrackerTest {
     }
 
     @Test fun durationOptions() {
-        assertEquals(listOf(2, 5, 10), SessionTracker.options(10, false))
-        assertEquals(listOf(1, 2, 5), SessionTracker.options(5, false))
-        assertEquals(listOf(10, 20, 45), SessionTracker.options(45, false))
-        assertEquals(listOf(3, 5, 15), SessionTracker.options(15, false))
-        assertEquals(listOf(1, 2, 5), SessionTracker.options(30, true))
-        assertTrue(SessionTracker.options(30, false).all { it in 1..30 })
+        // Your own picks, sorted, de-duplicated.
+        assertEquals(listOf(2, 5, 10), SessionTracker.options(listOf(10, 2, 5), false))
+        assertEquals(listOf(15), SessionTracker.options(listOf(15, 15), false))
+        // Extensions are short and never above your longest option.
+        assertEquals(listOf(1, 2, 5), SessionTracker.options(listOf(5, 30), true))
+        assertEquals(listOf(1, 2), SessionTracker.options(listOf(2), true))
+        assertEquals(listOf(1), SessionTracker.options(listOf(1), true))
+        assertTrue(SessionTracker.options(listOf(3, 45), true).all { it <= 45 })
     }
 
     @Test fun scatterStaysInBoundsWithoutOverlap() {

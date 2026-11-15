@@ -34,13 +34,15 @@ abstract class Challenge(protected val ctx: Context, protected val level: Int) {
     abstract val kind: String
     abstract val title: String
     abstract val subtitle: String
+    /** Centered in the free space (the countdown) instead of sitting under the title. */
+    open val centered = false
     protected lateinit var onSolved: () -> Unit
     protected val main = Handler(Looper.getMainLooper())
 
     fun mount(host: FrameLayout, solved: () -> Unit) {
         onSolved = solved
         host.removeAllViews()
-        host.addView(build(), FrameLayout.LayoutParams(MATCH, WRAP))
+        host.addView(build(), FrameLayout.LayoutParams(MATCH, WRAP, if (centered) Gravity.CENTER else Gravity.TOP))
     }
 
     protected abstract fun build(): View
@@ -57,12 +59,18 @@ abstract class Challenge(protected val ctx: Context, protected val level: Int) {
         gravity = Gravity.CENTER_HORIZONTAL
     }
 
-    protected fun big(text: String, sizeSp: Float = 44f) = TextView(ctx).apply {
+    protected fun big(text: String, sizeSp: Float = 36f) = TextView(ctx).apply {
         this.text = text
         textSize = sizeSp
         setTextColor(ctx.attrColor(R.attr.textMain))
         gravity = Gravity.CENTER
-        typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
+        fontFeatureSettings = "tnum"
+    }
+
+    protected fun dim(text: String, sizeSp: Float = 13f) = TextView(ctx).apply {
+        this.text = text
+        textSize = sizeSp
+        setTextColor(ctx.attrColor(R.attr.textDim))
     }
 
     protected fun input(numeric: Boolean, hint: String = "") = EditText(ctx).apply {
@@ -155,59 +163,59 @@ abstract class Challenge(protected val ctx: Context, protected val level: Int) {
     }
 }
 
-/** Breathe with the circle for a random number of seconds. */
+/** Breathe with the circle for a random number of seconds. The question sits under it. */
 class Countdown(ctx: Context, level: Int) : Challenge(ctx, level) {
     override val kind = "countdown"
+    override val centered = true
     private val seconds = when (level) {
         0 -> Random.nextInt(5, 13)
         1 -> Random.nextInt(10, 21)
         2 -> Random.nextInt(15, 31)
         else -> Random.nextInt(25, 46)
     }
-    private val prompts = ctx.resources.getStringArray(R.array.reflections).toList().shuffled()
-    override val title = prompts[0]
-    override val subtitle = str(R.string.countdown_sub)
+    private val question = ctx.resources.getStringArray(R.array.reflections).random()
+    override val title = ""
+    override val subtitle = ""
     private var breath: ValueAnimator? = null
 
     override fun build(): View {
         val size = dp(220)
-        // The glow breathes up to 115%, so the frame is bigger than the glow and nothing
-        // clips it: a glow scaled past its parent's bounds gets cut into a square.
-        val box = size * 135 / 100
-        val frame = FrameLayout(ctx).apply { clipChildren = false; clipToPadding = false }
-        val glow = ctx.attrColor(R.attr.accent2Color) and 0xFFFFFF
-        val circle = View(ctx).apply {
-            background = GradientDrawable().apply {
-                shape = GradientDrawable.OVAL
-                gradientType = GradientDrawable.RADIAL_GRADIENT
-                gradientRadius = size / 2f
-                // Soft falloff that reaches fully transparent before the edge.
-                colors = intArrayOf(glow or 0x66000000, glow or 0x2A000000, glow)
-            }
-        }
         val ring = View(ctx).apply {
             background = GradientDrawable().apply {
                 shape = GradientDrawable.OVAL
-                setStroke(dp(2), ctx.attrColor(R.attr.accentColor))
+                setStroke(dp(1) + dp(1) / 2, ctx.attrColor(R.attr.textDim) and 0x00FFFFFF or 0x80000000.toInt())
                 setColor(Color.TRANSPARENT)
             }
         }
-        val number = big(seconds.toString(), 56f)
-        frame.addView(circle, FrameLayout.LayoutParams(size, size, Gravity.CENTER))
-        frame.addView(ring, FrameLayout.LayoutParams(size * 6 / 10, size * 6 / 10, Gravity.CENTER))
-        frame.addView(number, FrameLayout.LayoutParams(WRAP, WRAP, Gravity.CENTER))
+        val number = big(seconds.toString(), 44f)
+        val phase = dim(str(R.string.breathe_in))
+        val center = column().apply {
+            addView(number)
+            addView(phase, LinearLayout.LayoutParams(WRAP, WRAP).apply { topMargin = dp(4) })
+        }
+        // The ring scales inside a box of its full size, so nothing ever clips it.
+        val circle = FrameLayout(ctx).apply {
+            addView(ring, FrameLayout.LayoutParams(size, size, Gravity.CENTER))
+            addView(center, FrameLayout.LayoutParams(WRAP, WRAP, Gravity.CENTER))
+        }
 
-        // 4s in, 4s out. Only runs while this screen is visible.
-        breath = ValueAnimator.ofFloat(0.75f, 1.15f).apply {
+        // 4s in, 4s out, gently. Only runs while this screen is visible.
+        breath = ValueAnimator.ofFloat(0.86f, 1f).apply {
             duration = 4000
             repeatMode = ValueAnimator.REVERSE
             repeatCount = ValueAnimator.INFINITE
             interpolator = AccelerateDecelerateInterpolator()
             addUpdateListener {
-                val s = it.animatedValue as Float
-                ring.scaleX = s; ring.scaleY = s
-                circle.scaleX = s; circle.scaleY = s
+                val v = it.animatedValue as Float
+                ring.scaleX = v; ring.scaleY = v
             }
+            var inhale = true
+            addListener(object : android.animation.AnimatorListenerAdapter() {
+                override fun onAnimationRepeat(animation: android.animation.Animator) {
+                    inhale = !inhale
+                    phase.text = str(if (inhale) R.string.breathe_in else R.string.breathe_out)
+                }
+            })
             start()
         }
 
@@ -216,7 +224,6 @@ class Countdown(ctx: Context, level: Int) : Challenge(ctx, level) {
             override fun run() {
                 left--
                 if (left <= 0) {
-                    number.text = "✓"
                     breath?.cancel()
                     onSolved()
                 } else {
@@ -226,10 +233,17 @@ class Countdown(ctx: Context, level: Int) : Challenge(ctx, level) {
             }
         }
         main.postDelayed(tick, 1000)
-        return FrameLayout(ctx).apply {
-            clipChildren = false
-            addView(frame, FrameLayout.LayoutParams(box, box, Gravity.CENTER))
-            minimumHeight = box
+
+        return column().apply {
+            addView(circle, LinearLayout.LayoutParams(size, size))
+            addView(TextView(ctx).apply {
+                text = question
+                textSize = 20f
+                gravity = Gravity.CENTER
+                setTextColor(ctx.attrColor(R.attr.textMain))
+                typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
+                setLineSpacing(0f, 1.2f)
+            }, LinearLayout.LayoutParams(MATCH, WRAP).apply { topMargin = dp(36) })
         }
     }
 
@@ -260,7 +274,7 @@ class MathChallenge(ctx: Context, level: Int) : Challenge(ctx, level) {
     }
 
     override fun build(): View = column().apply {
-        question = big("", 40f)
+        question = big("", 34f)
         addView(question)
         next()
         answerRow(this, numeric = true) { s ->
@@ -276,7 +290,7 @@ class Phrase(ctx: Context, level: Int) : Challenge(ctx, level) {
     private val phrase = ctx.resources.getStringArray(R.array.phrases).random()
 
     override fun build(): View = column().apply {
-        addView(big("“$phrase”", 22f).apply { setPadding(dp(8), 0, dp(8), 0) })
+        addView(big("“$phrase”", 20f).apply { setPadding(dp(8), 0, dp(8), 0) })
         answerRow(this, numeric = false) { s -> norm(s) == norm(phrase) }
     }
 
@@ -294,7 +308,7 @@ class Reverse(ctx: Context, level: Int) : Challenge(ctx, level) {
         .ifEmpty { listOf("pause") }.random().uppercase()
 
     override fun build(): View = column().apply {
-        addView(big(word, 38f).apply { letterSpacing = 0.15f })
+        addView(big(word, 32f).apply { letterSpacing = 0.15f })
         answerRow(this, numeric = false) { s -> s.uppercase() == word.reversed() }
     }
 }
@@ -306,33 +320,44 @@ class TapOrder(ctx: Context, level: Int) : Challenge(ctx, level) {
     override val title = str(R.string.taps_title, count)
     override val subtitle = str(R.string.taps_sub)
 
+    private lateinit var progress: TextView
+
     override fun build(): View {
-        val area = FrameLayout(ctx)
-        area.layoutParams = FrameLayout.LayoutParams(MATCH, dp(300))
-        area.minimumHeight = dp(300)
+        val area = FrameLayout(ctx).apply {
+            background = ctx.getDrawable(R.drawable.input)
+            minimumHeight = dp(320)
+        }
+        progress = dim(str(R.string.taps_progress, 0, count))
         area.post { place(area) }
-        return area
+        return column().apply {
+            gravity = Gravity.START
+            addView(area, LinearLayout.LayoutParams(MATCH, dp(320)))
+            addView(progress, LinearLayout.LayoutParams(WRAP, WRAP).apply { topMargin = dp(10) })
+        }
     }
 
     private fun place(area: FrameLayout) {
         area.removeAllViews()
-        val d = dp(56)
-        val spots = scatter(area.width, area.height, d, count)
+        progress.text = str(R.string.taps_progress, 0, count)
+        val d = dp(52)
+        val pad = dp(8)
+        val spots = scatter(area.width - 2 * pad, area.height - 2 * pad, d, count).map { (x, y) -> (x + pad) to (y + pad) }
         var expected = 1
         var locked = false
         spots.forEachIndexed { i, (x, y) ->
             val n = i + 1
             val dot = TextView(ctx).apply {
                 text = n.toString()
-                textSize = 20f
+                textSize = 17f
                 gravity = Gravity.CENTER
-                setTextColor(ctx.attrColor(R.attr.onAccent2Color))
+                setTextColor(ctx.attrColor(R.attr.textMain))
                 background = ctx.getDrawable(R.drawable.dot)
                 setOnClickListener {
                     if (locked) return@setOnClickListener
                     if (n == expected) {
-                        animate().alpha(0f).scaleX(0.4f).scaleY(0.4f).setDuration(150).start()
+                        animate().alpha(0.3f).setDuration(150).start()
                         isEnabled = false
+                        progress.text = str(R.string.taps_progress, n, count)
                         expected++
                         if (expected > count) onSolved()
                     } else {
@@ -358,16 +383,17 @@ class Hold(ctx: Context, level: Int) : Challenge(ctx, level) {
     override fun build(): View = column().apply {
         val bar = ProgressBar(ctx, null, android.R.attr.progressBarStyleHorizontal).apply {
             max = 1000
-            progressTintList = android.content.res.ColorStateList.valueOf(ctx.attrColor(R.attr.accentColor))
+            progressTintList = android.content.res.ColorStateList.valueOf(ctx.attrColor(R.attr.textMain))
+            progressBackgroundTintList = android.content.res.ColorStateList.valueOf(ctx.attrColor(R.attr.outlineColor))
         }
         val pad = TextView(ctx).apply {
             text = str(R.string.hold_button)
-            textSize = 18f
+            textSize = 16f
             gravity = Gravity.CENTER
-            setTextColor(ctx.attrColor(R.attr.onAccent2Color))
+            setTextColor(ctx.attrColor(R.attr.textMain))
             background = ctx.getDrawable(R.drawable.dot)
         }
-        val size = dp(150)
+        val size = dp(132)
         // The button sits at a random horizontal offset each time.
         val wrap = FrameLayout(ctx)
         wrap.addView(pad, FrameLayout.LayoutParams(size, size, Gravity.CENTER_VERTICAL).apply {
@@ -400,7 +426,7 @@ class Hold(ctx: Context, level: Int) : Challenge(ctx, level) {
             true
         }
         addView(wrap, LinearLayout.LayoutParams(MATCH, size + dp(20)))
-        addView(bar, LinearLayout.LayoutParams(MATCH, dp(10)).apply { topMargin = dp(24) })
+        addView(bar, LinearLayout.LayoutParams(MATCH, dp(4)).apply { topMargin = dp(24) })
     }
 
     override fun dispose() {
@@ -416,15 +442,18 @@ class CountDots(ctx: Context, level: Int) : Challenge(ctx, level) {
     private var n = 0
 
     override fun build(): View = column().apply {
-        val area = FrameLayout(ctx)
+        val area = FrameLayout(ctx).apply { background = ctx.getDrawable(R.drawable.input) }
         addView(area, LinearLayout.LayoutParams(MATCH, dp(220)))
         fun fill() {
             area.removeAllViews()
             n = Random.nextInt(7, 13) + level * 3
-            val d = dp(22)
-            scatter(area.width, area.height, d, n).forEach { (x, y) ->
-                area.addView(View(ctx).apply { background = ctx.getDrawable(R.drawable.dot) },
-                    FrameLayout.LayoutParams(d, d).apply { leftMargin = x; topMargin = y })
+            val d = dp(18)
+            val pad = dp(10)
+            val fill = ctx.attrColor(R.attr.textDim)
+            scatter(area.width - 2 * pad, area.height - 2 * pad, d, n).forEach { (x, y) ->
+                area.addView(View(ctx).apply {
+                    background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(fill) }
+                }, FrameLayout.LayoutParams(d, d).apply { leftMargin = x + pad; topMargin = y + pad })
             }
         }
         area.post { fill() }
@@ -441,7 +470,7 @@ class Memory(ctx: Context, level: Int) : Challenge(ctx, level) {
     private var code = ""
 
     override fun build(): View = column().apply {
-        val shown = big("", 44f).apply { letterSpacing = 0.3f }
+        val shown = big("", 36f).apply { letterSpacing = 0.3f }
         addView(shown)
         lateinit var field: EditText
         fun flash() {

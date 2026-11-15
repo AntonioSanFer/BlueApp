@@ -18,10 +18,17 @@ class Prefs(context: Context) {
         get() = sp.getStringSet(K_TARGETS, emptySet())!!.toSet()
         set(v) = sp.edit().putStringSet(K_TARGETS, v.toSet()).apply()
 
-    /** Longest single session allowed after passing a pause, in minutes. */
-    var maxSessionMin: Int
-        get() = sp.getInt(K_MAX_SESSION, 10)
-        set(v) = sp.edit().putInt(K_MAX_SESSION, v).apply()
+    /**
+     * The minutes offered on "How long do you need?" after a pause, chosen in Settings.
+     * The longest one is also the most a single session can last.
+     */
+    var timeOptions: List<Int>
+        get() = sp.getString(K_TIME_OPTIONS, null)
+            ?.split(',')?.mapNotNull { it.toIntOrNull() }?.filter { it in TIME_CHOICES }?.sorted()
+            ?.ifEmpty { null } ?: DEFAULT_TIME_OPTIONS
+        set(v) = sp.edit().putString(K_TIME_OPTIONS, v.distinct().sorted().joinToString(",")).apply()
+
+    val maxSessionMin: Int get() = timeOptions.max()
 
     /** Pause style: countdown only, challenges only, or a random mix of both. */
     var pauseMode: String
@@ -63,7 +70,7 @@ class Prefs(context: Context) {
     companion object {
         const val K_ONBOARDED = "onboarded"
         const val K_TARGETS = "targets"
-        const val K_MAX_SESSION = "max_session"
+        const val K_TIME_OPTIONS = "time_options"
         const val K_LAST_KIND = "last_kind"
         const val K_DAY = "day"
         const val K_THEME = "theme"
@@ -79,7 +86,10 @@ class Prefs(context: Context) {
         const val S_MINUTES = "s_minutes"       // minutes granted
         const val S_EXTENSIONS = "s_extensions" // "one more" after time ran out
 
-        val SESSION_CHOICES = intArrayOf(5, 10, 15, 20, 30, 45)
+        /** Everything you can pick from in Settings, and how many you can pick. */
+        val TIME_CHOICES = listOf(1, 2, 3, 5, 10, 15, 20, 30, 45, 60)
+        const val MAX_TIME_OPTIONS = 4
+        val DEFAULT_TIME_OPTIONS = listOf(2, 5, 10)
 
         /** Package names of the recommended apps. TikTok ships under several IDs by region. */
         val RECOMMENDED = linkedMapOf(

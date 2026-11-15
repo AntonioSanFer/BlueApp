@@ -15,17 +15,17 @@ Your thumb opens TikTok before you've decided to. BlueApp puts a short, **always
    - count the dots
    - remember a short code
    Pauses get a little longer the more often you open apps that day. Even the session-length buttons are shuffled, so there's no fixed spot to tap without reading.
-3. **You choose how long you need**, up to your session limit (5–45 min, set on first run).
+3. **You choose how long you need** from your own time options (up to 4, e.g. 2, 5 and 10 min; set on first run and in Settings › Time options). The longest one is your limit per session.
 4. **When time's up**, the pause screen comes back: close the app, or do a harder challenge for a short extension (1–5 min).
 
 Leave the app and come back within 60 seconds and your session keeps going. Stay away longer, or lock the phone for longer, and the next open gets a fresh pause. "Not now, take me home" is always one tap away and counts toward "times you walked away" on the dashboard.
 
 ## Themes
 
-Dashboard → **Appearance → Change**. Each option previews in its own colors and applies everywhere, including the pause screen.
+Dashboard → **Settings › Theme**. Each option previews in its own colors and applies everywhere, including the pause screen.
 
 - **System (Material You):** primary and secondary colors come from your wallpaper and follow dark mode (Android 12+).
-- **Blue** (default), **Pure black** (true black for OLED, easiest on the battery), **Light**, **Forest**, **Sunset**.
+- **Blue** (default, graphite with a muted blue), **Black** (true black for OLED, easiest on the battery), **Light**, **Forest**, **Sunset**.
 
 ## Battery
 

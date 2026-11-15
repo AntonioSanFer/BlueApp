@@ -5,10 +5,10 @@ import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
 import android.widget.Button
 import android.widget.FrameLayout
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.window.OnBackInvokedDispatcher
@@ -23,7 +23,6 @@ class InterceptActivity : ThemedActivity() {
     private lateinit var title: TextView
     private lateinit var subtitle: TextView
     private lateinit var host: FrameLayout
-    private lateinit var durations: LinearLayout
     private lateinit var leaveBtn: Button
 
     private var challenge: Challenge? = null
@@ -41,7 +40,6 @@ class InterceptActivity : ThemedActivity() {
         title = findViewById(R.id.title)
         subtitle = findViewById(R.id.subtitle)
         host = findViewById(R.id.host)
-        durations = findViewById(R.id.durations)
         leaveBtn = findViewById(R.id.leave)
 
         preview = intent.getBooleanExtra(EXTRA_PREVIEW, false)
@@ -49,7 +47,6 @@ class InterceptActivity : ThemedActivity() {
         appLabel = labelOf(this, pkg)
 
         findViewById<TextView>(R.id.app_name).text = getString(R.string.opening, appLabel)
-        runCatching { findViewById<ImageView>(R.id.app_icon).setImageDrawable(packageManager.getApplicationIcon(pkg)) }
 
         leaveBtn.text = getString(if (preview) R.string.close_preview else R.string.not_now)
         leaveBtn.setOnClickListener { leave() }
@@ -60,10 +57,8 @@ class InterceptActivity : ThemedActivity() {
 
         // Only a fresh open counts; a recreate (theme or dark-mode switch) is the same pause.
         if (!preview && savedInstanceState == null) prefs.bump(Prefs.S_PAUSES)
-        val pauses = prefs.stat(Prefs.S_PAUSES)
-        val left = prefs.stat(Prefs.S_LEFT)
         findViewById<TextView>(R.id.stats).text =
-            if (preview) getString(R.string.preview_note) else getString(R.string.pause_stats, pauses, left)
+            if (preview) getString(R.string.preview_note) else getString(R.string.pause_stats, prefs.stat(Prefs.S_PAUSES))
 
         if (intent.getBooleanExtra(EXTRA_TIME_UP, false)) {
             showTimeUp(intent.getLongExtra(EXTRA_USED_MS, 0L))
@@ -77,9 +72,10 @@ class InterceptActivity : ThemedActivity() {
 
     private fun showTimeUp(usedMs: Long) {
         val minutes = ((usedMs + 30_000) / 60_000).coerceAtLeast(1)
-        title.text = getString(R.string.time_up)
-        subtitle.text = getString(R.string.time_up_sub, minutes, appLabel)
+        findViewById<TextView>(R.id.app_name).text = appLabel
+        showHeading(getString(R.string.time_up), getString(R.string.time_up_sub, minutes, appLabel))
         leaveBtn.visibility = View.GONE
+        findViewById<View>(R.id.stats).visibility = View.GONE
 
         val col = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
         val close = Button(this, null, 0, R.style.Primary).apply {
@@ -92,14 +88,21 @@ class InterceptActivity : ThemedActivity() {
                 extension = true
                 prefs.bump(Prefs.S_EXTENSIONS)
                 leaveBtn.visibility = View.VISIBLE
+                findViewById<View>(R.id.stats).visibility = View.VISIBLE
                 // Each extra round today is a bit harder than the last.
                 startChallenge((baseLevel() + prefs.stat(Prefs.S_EXTENSIONS)).coerceAtMost(3))
             }
         }
         col.addView(close, LinearLayout.LayoutParams(-1, -2))
-        col.addView(more, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(12) })
+        col.addView(more, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(10) })
+        col.addView(TextView(this).apply {
+            setText(R.string.time_up_foot)
+            textSize = 13f
+            gravity = Gravity.CENTER
+            setTextColor(attrColor(R.attr.textDim))
+        }, LinearLayout.LayoutParams(-1, -2).apply { topMargin = dp(12) })
         host.removeAllViews()
-        host.addView(col)
+        host.addView(col, FrameLayout.LayoutParams(-1, -2, Gravity.BOTTOM))
     }
 
     private fun startChallenge(level: Int) {
@@ -107,8 +110,7 @@ class InterceptActivity : ThemedActivity() {
         val c = Challenge.random(this, level, prefs.lastKind, prefs.pauseMode)
         prefs.lastKind = c.kind
         challenge = c
-        title.text = c.title
-        subtitle.text = c.subtitle
+        showHeading(c.title, c.subtitle)
         c.mount(host) { onPassed() }
     }
 
@@ -116,19 +118,48 @@ class InterceptActivity : ThemedActivity() {
         challenge?.dispose()
         challenge = null
         host.removeAllViews()
-        title.text = resources.getStringArray(R.array.how_long).random()
-        subtitle.text = getString(R.string.how_long_sub, appLabel)
+        showHeading(resources.getStringArray(R.array.how_long).random(), getString(R.string.how_long_sub, appLabel))
 
-        durations.removeAllViews()
-        // Shuffled every time so there's no fixed spot to tap without reading.
-        SessionTracker.options(prefs.maxSessionMin, extension).shuffled().forEachIndexed { i, m ->
-            val b = Button(this, null, 0, R.style.Secondary).apply {
-                text = resources.getQuantityString(R.plurals.minutes, m, m)
-                setOnClickListener { grant(m) }
-            }
-            durations.addView(b, LinearLayout.LayoutParams(-1, -2).apply { if (i > 0) topMargin = dp(10) })
+        // Your time options from Settings, shuffled every time so there's no fixed spot
+        // to tap without reading. Each row says when the session would end.
+        val group = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            background = getDrawable(R.drawable.card)
+            clipToOutline = true
         }
-        durations.visibility = View.VISIBLE
+        val clock = android.text.format.DateFormat.getTimeFormat(this)
+        val now = System.currentTimeMillis()
+        SessionTracker.options(prefs.timeOptions, extension).shuffled().forEach { m ->
+            if (group.childCount > 0) group.addView(Ui.divider(this))
+            group.addView(LinearLayout(this).apply {
+                orientation = LinearLayout.HORIZONTAL
+                gravity = Gravity.CENTER_VERTICAL
+                minimumHeight = dp(56)
+                setPadding(dp(16), 0, dp(16), 0)
+                background = getDrawable(R.drawable.row_bg)
+                isClickable = true
+                setOnClickListener { grant(m) }
+                addView(TextView(context).apply {
+                    text = resources.getQuantityString(R.plurals.minutes, m, m)
+                    textSize = 16f
+                    setTextColor(attrColor(R.attr.textMain))
+                }, LinearLayout.LayoutParams(0, -2, 1f))
+                addView(TextView(context).apply {
+                    text = getString(R.string.until_time, clock.format(java.util.Date(now + m * 60_000L)))
+                    textSize = 14f
+                    setTextColor(attrColor(R.attr.textDim))
+                })
+            }, LinearLayout.LayoutParams(-1, -2))
+        }
+        host.addView(group, FrameLayout.LayoutParams(-1, -2, Gravity.TOP))
+    }
+
+    /** Title and subtitle above the content; hidden when empty (the countdown carries its own question). */
+    private fun showHeading(t: String, sub: String) {
+        title.text = t
+        subtitle.text = sub
+        title.visibility = if (t.isEmpty()) View.GONE else View.VISIBLE
+        subtitle.visibility = if (sub.isEmpty()) View.GONE else View.VISIBLE
     }
 
     private fun grant(minutes: Int) {

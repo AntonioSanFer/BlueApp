@@ -84,13 +84,14 @@ class SessionTracker(var graceMs: Long = 60_000L) {
     }
 
     companion object {
-        private val NICE = intArrayOf(1, 2, 3, 5, 10, 15, 20, 30, 45, 60)
-
-        /** Up to three session lengths to pick from, the longest being your max. Extensions are short. */
-        fun options(max: Int, extension: Boolean): List<Int> {
+        /**
+         * Buttons on "How long do you need?": your own time options, or after time ran out,
+         * short extensions (1, 2, 5 min) capped at your longest option.
+         */
+        fun options(timeOptions: List<Int>, extension: Boolean): List<Int> {
+            val max = timeOptions.maxOrNull() ?: 1
             if (extension) return listOf(1, 2, 5).filter { it <= max }.ifEmpty { listOf(max) }
-            fun nice(v: Int) = NICE.lastOrNull { it <= v } ?: 1
-            return listOf(nice(max / 4), nice(max / 2), max).distinct()
+            return timeOptions.distinct().sorted().ifEmpty { listOf(max) }
         }
     }
 }
