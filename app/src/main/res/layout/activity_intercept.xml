@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:textColor="@color/text_dim"
+                android:textColor="?attr/textDim"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -90,7 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
             android:gravity="center"
-            android:textColor="@color/text_dim"
+            android:textColor="?attr/textDim"
             android:textSize="13sp" />
 
         <Button

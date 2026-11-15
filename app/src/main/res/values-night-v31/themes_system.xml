@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Material You, dark mode. Follows the system dark-mode switch automatically. -->
+    <style name="Theme.App.System" parent="Base.App.Dark">
+        <item name="bgColor">@android:color/system_neutral1_900</item>
+        <item name="surfaceColor">@android:color/system_neutral1_800</item>
+        <item name="surface2Color">@android:color/system_neutral2_800</item>
+        <item name="outlineColor">@android:color/system_neutral2_700</item>
+        <item name="accentColor">@android:color/system_accent1_200</item>
+        <item name="onAccentColor">@android:color/system_accent1_800</item>
+        <item name="accent2Color">@android:color/system_accent2_200</item>
+        <item name="onAccent2Color">@android:color/system_accent2_800</item>
+        <item name="textMain">@android:color/system_neutral1_50</item>
+        <item name="textDim">@android:color/system_neutral2_200</item>
+    </style>
+</resources>

@@ -94,6 +94,26 @@
     <string name="close_app">Close %1$s</string>
     <string name="need_more">I need a bit more</string>
 
+    <!-- Themes -->
+    <string name="appearance">Appearance</string>
+    <string name="theme">Theme</string>
+    <string name="change">Change</string>
+    <string name="themes_title">Themes</string>
+    <string name="themes_body">Applies everywhere, including the pause screen.</string>
+    <string name="theme_system">System (Material You)</string>
+    <string name="theme_system_desc">Primary and secondary colours from your wallpaper. Follows dark mode.</string>
+    <string name="theme_needs_android12">Needs Android 12 or newer</string>
+    <string name="theme_blue">Blue</string>
+    <string name="theme_blue_desc">The original deep navy.</string>
+    <string name="theme_amoled">Pure black</string>
+    <string name="theme_amoled_desc">True black for OLED screens. Easiest on the battery.</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_light_desc">Bright and clean for daytime.</string>
+    <string name="theme_forest">Forest</string>
+    <string name="theme_forest_desc">Calm greens with a warm gold.</string>
+    <string name="theme_sunset">Sunset</string>
+    <string name="theme_sunset_desc">Warm coral and amber.</string>
+
     <plurals name="minutes">
         <item quantity="one">%d minute</item>
         <item quantity="other">%d minutes</item>

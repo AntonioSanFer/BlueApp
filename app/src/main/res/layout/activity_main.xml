@@ -109,7 +109,7 @@
                 android:id="@+id/apps_summary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text"
+                android:textColor="?attr/textMain"
                 android:textSize="16sp" />
 
             <Button
@@ -151,6 +151,51 @@
                 android:orientation="horizontal" />
         </LinearLayout>
 
+        <!-- Appearance -->
+        <TextView
+            style="@style/Section"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/appearance" />
+
+        <LinearLayout
+            style="@style/Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/theme"
+                    android:textColor="?attr/textDim"
+                    android:textSize="13sp" />
+
+                <TextView
+                    android:id="@+id/theme_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="?attr/textMain"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/theme"
+                style="@style/Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/change" />
+        </LinearLayout>
+
         <Button
             android:id="@+id/preview"
             style="@style/Secondary"
@@ -164,7 +209,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/battery_note"
-            android:textColor="@color/text_dim"
+            android:textColor="?attr/textDim"
             android:textSize="12sp" />
     </LinearLayout>
 </ScrollView>

@@ -23,6 +23,10 @@ class Prefs(context: Context) {
         get() = sp.getInt(K_MAX_SESSION, 10)
         set(v) = sp.edit().putInt(K_MAX_SESSION, v).apply()
 
+    var themeId: String
+        get() = sp.getString(K_THEME, Themes.DEFAULT)!!
+        set(v) = sp.edit().putString(K_THEME, v).apply()
+
     /** Last challenge kind shown, so the next one is guaranteed to be different. */
     var lastKind: String?
         get() = sp.getString(K_LAST_KIND, null)
@@ -57,6 +61,7 @@ class Prefs(context: Context) {
         const val K_MAX_SESSION = "max_session"
         const val K_LAST_KIND = "last_kind"
         const val K_DAY = "day"
+        const val K_THEME = "theme"
 
         const val S_PAUSES = "s_pauses"         // times the pause screen appeared
         const val S_LEFT = "s_left"             // times you walked away instead

@@ -60,15 +60,15 @@ abstract class Challenge(protected val ctx: Context, protected val level: Int) {
     protected fun big(text: String, sizeSp: Float = 44f) = TextView(ctx).apply {
         this.text = text
         textSize = sizeSp
-        setTextColor(ctx.getColor(R.color.text))
+        setTextColor(ctx.attrColor(R.attr.textMain))
         gravity = Gravity.CENTER
         typeface = android.graphics.Typeface.create("sans-serif-medium", android.graphics.Typeface.NORMAL)
     }
 
     protected fun input(numeric: Boolean, hint: String = "") = EditText(ctx).apply {
         background = ctx.getDrawable(R.drawable.input)
-        setTextColor(ctx.getColor(R.color.text))
-        setHintTextColor(ctx.getColor(R.color.text_dim))
+        setTextColor(ctx.attrColor(R.attr.textMain))
+        setHintTextColor(ctx.attrColor(R.attr.textDim))
         this.hint = hint
         textSize = 22f
         gravity = Gravity.CENTER
@@ -169,11 +169,19 @@ class Countdown(ctx: Context, level: Int) : Challenge(ctx, level) {
     override fun build(): View {
         val size = dp(220)
         val frame = FrameLayout(ctx)
-        val circle = View(ctx).apply { background = ctx.getDrawable(R.drawable.breath) }
+        val glow = ctx.attrColor(R.attr.accent2Color)
+        val circle = View(ctx).apply {
+            background = GradientDrawable().apply {
+                shape = GradientDrawable.OVAL
+                gradientType = GradientDrawable.RADIAL_GRADIENT
+                gradientRadius = size / 2f
+                colors = intArrayOf((glow and 0xFFFFFF) or 0x66000000, glow and 0xFFFFFF)
+            }
+        }
         val ring = View(ctx).apply {
             background = GradientDrawable().apply {
                 shape = GradientDrawable.OVAL
-                setStroke(dp(2), ctx.getColor(R.color.blue))
+                setStroke(dp(2), ctx.attrColor(R.attr.accentColor))
                 setColor(Color.TRANSPARENT)
             }
         }
@@ -307,7 +315,7 @@ class TapOrder(ctx: Context, level: Int) : Challenge(ctx, level) {
                 text = n.toString()
                 textSize = 20f
                 gravity = Gravity.CENTER
-                setTextColor(Color.WHITE)
+                setTextColor(ctx.attrColor(R.attr.onAccent2Color))
                 background = ctx.getDrawable(R.drawable.dot)
                 setOnClickListener {
                     if (n == expected) {
@@ -337,13 +345,13 @@ class Hold(ctx: Context, level: Int) : Challenge(ctx, level) {
     override fun build(): View = column().apply {
         val bar = ProgressBar(ctx, null, android.R.attr.progressBarStyleHorizontal).apply {
             max = 1000
-            progressTintList = android.content.res.ColorStateList.valueOf(ctx.getColor(R.color.blue))
+            progressTintList = android.content.res.ColorStateList.valueOf(ctx.attrColor(R.attr.accentColor))
         }
         val pad = TextView(ctx).apply {
             text = str(R.string.hold_button)
             textSize = 18f
             gravity = Gravity.CENTER
-            setTextColor(Color.WHITE)
+            setTextColor(ctx.attrColor(R.attr.onAccent2Color))
             background = ctx.getDrawable(R.drawable.dot)
         }
         val size = dp(150)

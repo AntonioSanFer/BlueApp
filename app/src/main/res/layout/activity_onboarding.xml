@@ -53,7 +53,7 @@
                     android:layout_marginTop="24dp"
                     android:lineSpacingMultiplier="1.35"
                     android:text="@string/welcome_points"
-                    android:textColor="@color/text"
+                    android:textColor="?attr/textMain"
                     android:textSize="15sp" />
             </LinearLayout>
         </ScrollView>
@@ -119,7 +119,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="8dp"
                 android:text="@string/minutes_label"
-                android:textColor="@color/text_dim"
+                android:textColor="?attr/textDim"
                 android:textSize="13sp" />
         </LinearLayout>
 

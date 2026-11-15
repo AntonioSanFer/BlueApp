@@ -1,6 +1,5 @@
 package com.blueapp.detox
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -8,13 +7,10 @@ import android.widget.Button
 import android.widget.TextView
 
 /** Dashboard: is protection on, today's numbers, which apps, how long a session may last. */
-class MainActivity : Activity() {
-
-    private lateinit var prefs: Prefs
+class MainActivity : ThemedActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        prefs = Prefs(this)
         if (!prefs.onboarded) {
             startActivity(Intent(this, OnboardingActivity::class.java))
             finish()
@@ -33,6 +29,9 @@ class MainActivity : Activity() {
                     .putExtra(InterceptActivity.EXTRA_PKG, prefs.targets.firstOrNull() ?: packageName)
             )
         }
+        findViewById<Button>(R.id.theme).setOnClickListener {
+            startActivity(Intent(this, ThemesActivity::class.java))
+        }
         Ui.minuteChips(findViewById(R.id.choices), prefs.maxSessionMin) { prefs.maxSessionMin = it }
     }
 
@@ -44,7 +43,7 @@ class MainActivity : Activity() {
         val targets = prefs.targets
         findViewById<TextView>(R.id.status_title).apply {
             setText(if (on) R.string.status_on else R.string.status_off)
-            setTextColor(getColor(if (on) R.color.good else R.color.warn))
+            setTextColor(attrColor(if (on) R.attr.goodColor else R.attr.warnColor))
         }
         findViewById<TextView>(R.id.status_body).text = when {
             !on -> getString(R.string.status_off_body)
@@ -59,6 +58,7 @@ class MainActivity : Activity() {
         stat(R.id.st_minutes, prefs.stat(Prefs.S_MINUTES), R.string.st_minutes)
 
         findViewById<TextView>(R.id.apps_summary).text = Ui.appSummary(this, targets)
+        findViewById<TextView>(R.id.theme_name).setText(Themes.current(prefs).name)
     }
 
     private fun stat(id: Int, value: Int, label: Int) {

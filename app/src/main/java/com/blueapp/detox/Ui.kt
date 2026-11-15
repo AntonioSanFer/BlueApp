@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.provider.Settings
@@ -24,11 +23,11 @@ object Ui {
                 text = m.toString()
                 textSize = 17f
                 gravity = Gravity.CENTER
-                setTextColor(if (on) Color.WHITE else ctx.getColor(R.color.text))
+                setTextColor(ctx.attrColor(if (on) R.attr.onAccentColor else R.attr.textMain))
                 background = GradientDrawable().apply {
                     cornerRadius = 14 * d
-                    setColor(ctx.getColor(if (on) R.color.blue else R.color.surface_2))
-                    setStroke((1 * d).toInt(), ctx.getColor(if (on) R.color.blue else R.color.outline))
+                    setColor(ctx.attrColor(if (on) R.attr.accentColor else R.attr.surface2Color))
+                    setStroke((1 * d).toInt(), ctx.attrColor(if (on) R.attr.accentColor else R.attr.outlineColor))
                 }
                 minHeight = (48 * d).toInt()
                 contentDescription = ctx.resources.getQuantityString(R.plurals.minutes, m, m)

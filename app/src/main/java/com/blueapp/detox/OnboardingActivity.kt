@@ -1,6 +1,5 @@
 package com.blueapp.detox
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -12,9 +11,8 @@ import android.widget.Toast
 import android.widget.ViewFlipper
 
 /** First run: pick apps (TikTok / Instagram / YouTube pre-selected), session length, then permissions. */
-class OnboardingActivity : Activity() {
+class OnboardingActivity : ThemedActivity() {
 
-    private lateinit var prefs: Prefs
     private lateinit var flipper: ViewFlipper
     private lateinit var next: Button
     private lateinit var back: Button
@@ -23,7 +21,6 @@ class OnboardingActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        prefs = Prefs(this)
         setContentView(R.layout.activity_onboarding)
         flipper = findViewById(R.id.flipper)
         next = findViewById(R.id.next)
@@ -134,7 +131,7 @@ class OnboardingActivity : Activity() {
     private fun stateOf(card: View, granted: Boolean, missingLabel: Int) {
         card.findViewById<TextView>(R.id.perm_state).apply {
             setText(if (granted) R.string.granted else missingLabel)
-            setTextColor(getColor(if (granted) R.color.good else R.color.warn))
+            setTextColor(attrColor(if (granted) R.attr.goodColor else R.attr.warnColor))
         }
         card.findViewById<Button>(R.id.perm_grant).visibility = if (granted) View.GONE else View.VISIBLE
         if (granted) {

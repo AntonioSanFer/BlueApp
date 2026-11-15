@@ -20,6 +20,13 @@ Your thumb opens TikTok before you've decided to. BlueApp puts a short, **always
 
 Leave the app and come back within 60 seconds and your session keeps going. Stay away longer, or lock the phone for longer, and the next open gets a fresh pause. "Not now, take me home" is always one tap away and counts toward "times you walked away" on the dashboard.
 
+## Themes
+
+Dashboard → **Appearance → Change**. Each option previews in its own colors and applies everywhere, including the pause screen.
+
+- **System (Material You):** primary and secondary colors come from your wallpaper and follow dark mode (Android 12+).
+- **Blue** (default), **Pure black** (true black for OLED, easiest on the battery), **Light**, **Forest**, **Sunset**.
+
 ## Battery
 
 - No foreground service, no polling, no alarms, no wakelocks, **no internet permission**.
@@ -33,6 +40,14 @@ Leave the app and come back within 60 seconds and your session keeps going. Stay
 |---|---|
 | Accessibility (required) | To know which app just opened. It can't read your screen or your typing. |
 | Display over other apps (optional) | Some OEM skins (Xiaomi, Oppo, Vivo, Huawei) block the pause screen without it. |
+
+## Installing (Play Protect says "App blocked to protect your device")
+
+Google Play Protect blocks *sideloaded* apps that declare an Accessibility service when they are installed from a browser, chat app or file manager. It's a blanket anti-fraud rule, not a finding about this app. BlueApp has no internet permission, so it can't send anything anywhere. Ways in:
+
+1. **USB / ADB (recommended):** `adb install app-release.apk`. ADB installs aren't covered by this block.
+2. **Pause Play Protect while installing:** Play Store → your profile icon → Play Protect → ⚙ → turn off *Scan apps with Play Protect*. Install, then turn it back on.
+3. **Play Store internal testing:** upload to a Play Console internal track and install from the Play Store. This needs a developer account and an Accessibility declaration.
 
 **Sideloading on Android 13+:** the Accessibility switch is greyed out for apps installed outside the Play Store. Go to *App info → ⋮ → Allow restricted settings*, then turn it on. The onboarding screen has a shortcut for this.
 

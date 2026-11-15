@@ -89,6 +89,25 @@
     <string name="close_app">Cerrar %1$s</string>
     <string name="need_more">Necesito un poco más</string>
 
+    <string name="appearance">Apariencia</string>
+    <string name="theme">Tema</string>
+    <string name="change">Cambiar</string>
+    <string name="themes_title">Temas</string>
+    <string name="themes_body">Se aplica en toda la app, también en la pausa.</string>
+    <string name="theme_system">Sistema (Material You)</string>
+    <string name="theme_system_desc">Colores primario y secundario de tu fondo de pantalla. Sigue el modo oscuro.</string>
+    <string name="theme_needs_android12">Necesita Android 12 o superior</string>
+    <string name="theme_blue">Azul</string>
+    <string name="theme_blue_desc">El azul marino original.</string>
+    <string name="theme_amoled">Negro puro</string>
+    <string name="theme_amoled_desc">Negro real para pantallas OLED. El que menos batería gasta.</string>
+    <string name="theme_light">Claro</string>
+    <string name="theme_light_desc">Luminoso y limpio para el día.</string>
+    <string name="theme_forest">Bosque</string>
+    <string name="theme_forest_desc">Verdes tranquilos con un toque dorado.</string>
+    <string name="theme_sunset">Atardecer</string>
+    <string name="theme_sunset_desc">Coral y ámbar cálidos.</string>
+
     <plurals name="minutes">
         <item quantity="one">%d minuto</item>
         <item quantity="many">%d minutos</item>

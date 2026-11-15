@@ -1,7 +1,6 @@
 package com.blueapp.detox
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -19,9 +18,8 @@ import java.lang.ref.WeakReference
  * The pause screen. Shows a random challenge; once it's done you pick how long you need,
  * and the session timer starts. When time is up, this screen comes back.
  */
-class InterceptActivity : Activity() {
+class InterceptActivity : ThemedActivity() {
 
-    private lateinit var prefs: Prefs
     private lateinit var title: TextView
     private lateinit var subtitle: TextView
     private lateinit var host: FrameLayout
@@ -37,8 +35,8 @@ class InterceptActivity : Activity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        theme.applyStyle(R.style.Overlay_Intercept, true)
         current = WeakReference(this)
-        prefs = Prefs(this)
         setContentView(R.layout.activity_intercept)
         title = findViewById(R.id.title)
         subtitle = findViewById(R.id.subtitle)

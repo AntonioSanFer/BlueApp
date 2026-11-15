@@ -20,7 +20,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Blue">
+        android:theme="@style/Theme.App.Blue">
 
         <activity
             android:name=".MainActivity"
@@ -39,6 +39,10 @@
             android:name=".AppsActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ThemesActivity"
+            android:exported="false" />
+
         <!-- The pause screen. Own task + no recents so it can't be swiped back into,
              and config changes are handled in place so rotating doesn't re-roll the challenge. -->
         <activity
@@ -49,8 +53,7 @@
             android:taskAffinity="com.blueapp.detox.intercept"
             android:noHistory="true"
             android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|uiMode"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/Theme.Blue.Intercept" />
+            android:windowSoftInputMode="adjustResize" />
 
         <service
             android:name=".GuardService"

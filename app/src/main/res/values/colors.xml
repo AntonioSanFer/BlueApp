@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="bg">#0B1220</color>
-    <color name="surface">#141E33</color>
-    <color name="surface_2">#1C2942</color>
-    <color name="outline">#2A3A5C</color>
-    <color name="blue">#4C8DFF</color>
-    <color name="text">#EAF0FF</color>
-    <color name="text_dim">#93A3C4</color>
-    <color name="good">#47D18C</color>
-    <color name="warn">#FFB547</color>
+    <!-- Launcher icon background. All UI colors come from the theme (themes.xml). -->
     <color name="ic_bg">#1A4FD6</color>
 </resources>
