@@ -1,6 +1,7 @@
 package com.blueapp.detox
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -30,6 +31,11 @@ class MainActivity : ThemedActivity() {
                     .putExtra(InterceptActivity.EXTRA_PREVIEW, true)
                     .putExtra(InterceptActivity.EXTRA_PKG, prefs.targets.firstOrNull() ?: packageName)
             )
+        }
+
+        findViewById<View>(R.id.github).setOnClickListener {
+            // Opens in the browser; BlueApp itself still has no internet access.
+            runCatching { startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.repo_url)))) }
         }
 
         val settings = findViewById<LinearLayout>(R.id.settings)

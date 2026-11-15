@@ -144,6 +144,21 @@
             android:layout_weight="1"
             android:minHeight="16dp" />
 
+        <!-- Source code link, in the free space above the preview link. -->
+        <ImageButton
+            android:id="@+id/github"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="4dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/github"
+            android:padding="12dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_github"
+            android:tint="?attr/textDim"
+            android:tooltipText="@string/github" />
+
         <Button
             android:id="@+id/preview"
             style="@style/Link"
