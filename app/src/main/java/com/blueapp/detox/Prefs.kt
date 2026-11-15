@@ -23,6 +23,11 @@ class Prefs(context: Context) {
         get() = sp.getInt(K_MAX_SESSION, 10)
         set(v) = sp.edit().putInt(K_MAX_SESSION, v).apply()
 
+    /** Pause style: countdown only, challenges only, or a random mix of both. */
+    var pauseMode: String
+        get() = sp.getString(K_PAUSE_MODE, MODE_BOTH)!!
+        set(v) = sp.edit().putString(K_PAUSE_MODE, v).apply()
+
     var themeId: String
         get() = sp.getString(K_THEME, Themes.DEFAULT)!!
         set(v) = sp.edit().putString(K_THEME, v).apply()
@@ -62,6 +67,11 @@ class Prefs(context: Context) {
         const val K_LAST_KIND = "last_kind"
         const val K_DAY = "day"
         const val K_THEME = "theme"
+        const val K_PAUSE_MODE = "pause_mode"
+
+        const val MODE_TIMER = "timer"
+        const val MODE_CHALLENGE = "challenge"
+        const val MODE_BOTH = "both"
 
         const val S_PAUSES = "s_pauses"         // times the pause screen appeared
         const val S_LEFT = "s_left"             // times you walked away instead

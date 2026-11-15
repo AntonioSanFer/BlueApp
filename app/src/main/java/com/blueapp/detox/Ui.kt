@@ -42,6 +42,36 @@ object Ui {
         }
     }
 
+    /** Equal-width segmented choice; the selected option is filled with the primary color. */
+    fun segmented(row: LinearLayout, options: List<Pair<String, String>>, current: String, onPick: (String) -> Unit) {
+        val ctx = row.context
+        row.removeAllViews()
+        options.forEachIndexed { i, (id, label) ->
+            val on = id == current
+            val seg = TextView(ctx).apply {
+                text = label
+                textSize = 15f
+                gravity = Gravity.CENTER
+                setTextColor(ctx.attrColor(if (on) R.attr.onAccentColor else R.attr.textMain))
+                background = GradientDrawable().apply {
+                    cornerRadius = ctx.dp(14).toFloat()
+                    setColor(ctx.attrColor(if (on) R.attr.accentColor else R.attr.surface2Color))
+                    setStroke(ctx.dp(1), ctx.attrColor(if (on) R.attr.accentColor else R.attr.outlineColor))
+                }
+                minHeight = ctx.dp(48)
+                setPadding(ctx.dp(6), 0, ctx.dp(6), 0)
+                isSelected = on
+                setOnClickListener {
+                    onPick(id)
+                    segmented(row, options, id, onPick)
+                }
+            }
+            row.addView(seg, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
+                if (i > 0) marginStart = ctx.dp(8)
+            })
+        }
+    }
+
     fun openAccessibilitySettings(a: Activity) {
         a.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
     }

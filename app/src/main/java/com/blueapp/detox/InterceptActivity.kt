@@ -104,7 +104,7 @@ class InterceptActivity : ThemedActivity() {
 
     private fun startChallenge(level: Int) {
         challenge?.dispose()
-        val c = Challenge.random(this, level, prefs.lastKind)
+        val c = Challenge.random(this, level, prefs.lastKind, prefs.pauseMode)
         prefs.lastKind = c.kind
         challenge = c
         title.text = c.title

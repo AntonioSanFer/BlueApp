@@ -108,6 +108,14 @@
     <string name="theme_sunset">Atardecer</string>
     <string name="theme_sunset_desc">Coral y ámbar cálidos.</string>
 
+    <string name="pause_style">Tipo de pausa</string>
+    <string name="mode_timer">Tiempo</string>
+    <string name="mode_challenge">Reto</string>
+    <string name="mode_both">Ambos</string>
+    <string name="mode_timer_desc">Siempre una cuenta atrás con respiración, de duración distinta cada vez.</string>
+    <string name="mode_challenge_desc">Siempre un reto rápido, distinto cada vez.</string>
+    <string name="mode_both_desc">Una mezcla aleatoria de cuentas atrás y retos. La más difícil de convertir en costumbre.</string>
+
     <plurals name="minutes">
         <item quantity="one">%d minuto</item>
         <item quantity="many">%d minutos</item>

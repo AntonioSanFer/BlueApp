@@ -144,8 +144,11 @@ abstract class Challenge(protected val ctx: Context, protected val level: Int) {
         )
 
         /** Random challenge, never the same kind as last time. Countdown is a bit more common: it's the gentlest. */
-        fun random(ctx: Context, level: Int, lastKind: String?): Challenge {
-            val pool = FACTORIES.filter { it.first != lastKind }
+        /** [mode] is the user's pause style: [Prefs.MODE_TIMER], [Prefs.MODE_CHALLENGE] or [Prefs.MODE_BOTH]. */
+        fun random(ctx: Context, level: Int, lastKind: String?, mode: String = Prefs.MODE_BOTH): Challenge {
+            if (mode == Prefs.MODE_TIMER) return Countdown(ctx, level) // varies in length and prompt instead
+            val allowed = if (mode == Prefs.MODE_CHALLENGE) FACTORIES.filter { it.first != "countdown" } else FACTORIES
+            val pool = allowed.filter { it.first != lastKind }
             val weighted = pool.flatMap { if (it.first == "countdown") listOf(it, it) else listOf(it) }
             return weighted.random().second(ctx, level)
         }
@@ -168,14 +171,18 @@ class Countdown(ctx: Context, level: Int) : Challenge(ctx, level) {
 
     override fun build(): View {
         val size = dp(220)
-        val frame = FrameLayout(ctx)
-        val glow = ctx.attrColor(R.attr.accent2Color)
+        // The glow breathes up to 115%, so the frame is bigger than the glow and nothing
+        // clips it: a glow scaled past its parent's bounds gets cut into a square.
+        val box = size * 135 / 100
+        val frame = FrameLayout(ctx).apply { clipChildren = false; clipToPadding = false }
+        val glow = ctx.attrColor(R.attr.accent2Color) and 0xFFFFFF
         val circle = View(ctx).apply {
             background = GradientDrawable().apply {
                 shape = GradientDrawable.OVAL
                 gradientType = GradientDrawable.RADIAL_GRADIENT
                 gradientRadius = size / 2f
-                colors = intArrayOf((glow and 0xFFFFFF) or 0x66000000, glow and 0xFFFFFF)
+                // Soft falloff that reaches fully transparent before the edge.
+                colors = intArrayOf(glow or 0x66000000, glow or 0x2A000000, glow)
             }
         }
         val ring = View(ctx).apply {
@@ -220,8 +227,9 @@ class Countdown(ctx: Context, level: Int) : Challenge(ctx, level) {
         }
         main.postDelayed(tick, 1000)
         return FrameLayout(ctx).apply {
-            addView(frame, FrameLayout.LayoutParams(size, size, Gravity.CENTER))
-            minimumHeight = size
+            clipChildren = false
+            addView(frame, FrameLayout.LayoutParams(box, box, Gravity.CENTER))
+            minimumHeight = box
         }
     }
 

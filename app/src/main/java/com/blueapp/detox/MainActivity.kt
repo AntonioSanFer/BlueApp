@@ -33,6 +33,26 @@ class MainActivity : ThemedActivity() {
             startActivity(Intent(this, ThemesActivity::class.java))
         }
         Ui.minuteChips(findViewById(R.id.choices), prefs.maxSessionMin) { prefs.maxSessionMin = it }
+        Ui.segmented(
+            findViewById(R.id.pause_modes),
+            listOf(
+                Prefs.MODE_TIMER to getString(R.string.mode_timer),
+                Prefs.MODE_CHALLENGE to getString(R.string.mode_challenge),
+                Prefs.MODE_BOTH to getString(R.string.mode_both),
+            ),
+            prefs.pauseMode,
+        ) { prefs.pauseMode = it; updateModeHint() }
+        updateModeHint()
+    }
+
+    private fun updateModeHint() {
+        findViewById<TextView>(R.id.pause_mode_hint).setText(
+            when (prefs.pauseMode) {
+                Prefs.MODE_TIMER -> R.string.mode_timer_desc
+                Prefs.MODE_CHALLENGE -> R.string.mode_challenge_desc
+                else -> R.string.mode_both_desc
+            }
+        )
     }
 
     override fun onResume() {

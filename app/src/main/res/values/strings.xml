@@ -114,6 +114,15 @@
     <string name="theme_sunset">Sunset</string>
     <string name="theme_sunset_desc">Warm coral and amber.</string>
 
+    <!-- Pause style -->
+    <string name="pause_style">Pause style</string>
+    <string name="mode_timer">Timer</string>
+    <string name="mode_challenge">Challenge</string>
+    <string name="mode_both">Both</string>
+    <string name="mode_timer_desc">Always a breathing countdown, a different length each time.</string>
+    <string name="mode_challenge_desc">Always a quick challenge, a different one each time.</string>
+    <string name="mode_both_desc">A random mix of countdowns and challenges. Hardest to get used to.</string>
+
     <plurals name="minutes">
         <item quantity="one">%d minute</item>
         <item quantity="other">%d minutes</item>
