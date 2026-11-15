@@ -95,6 +95,4 @@ class ThemesActivity : ThemedActivity() {
         }
         return card
     }
-
-    private fun dp(v: Int) = (v * resources.displayMetrics.density).toInt()
 }

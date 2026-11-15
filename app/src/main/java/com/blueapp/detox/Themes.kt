@@ -27,6 +27,8 @@ object Themes {
         ALL.firstOrNull { it.id == prefs.themeId && it.available } ?: ALL.first { it.id == DEFAULT }
 }
 
+fun Context.dp(v: Int): Int = (v * resources.displayMetrics.density).toInt()
+
 /** Resolve one of our color attributes (?attr/accentColor etc.) against a context's theme. */
 fun Context.attrColor(attr: Int): Int {
     val tv = TypedValue()

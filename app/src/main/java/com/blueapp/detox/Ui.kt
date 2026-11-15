@@ -15,7 +15,6 @@ object Ui {
     /** A row of equal-width minute chips; the chosen one is filled. */
     fun minuteChips(row: LinearLayout, current: Int, onPick: (Int) -> Unit) {
         val ctx = row.context
-        val d = ctx.resources.displayMetrics.density
         row.removeAllViews()
         Prefs.SESSION_CHOICES.forEachIndexed { i, m ->
             val on = m == current
@@ -25,11 +24,11 @@ object Ui {
                 gravity = Gravity.CENTER
                 setTextColor(ctx.attrColor(if (on) R.attr.onAccentColor else R.attr.textMain))
                 background = GradientDrawable().apply {
-                    cornerRadius = 14 * d
+                    cornerRadius = ctx.dp(14).toFloat()
                     setColor(ctx.attrColor(if (on) R.attr.accentColor else R.attr.surface2Color))
-                    setStroke((1 * d).toInt(), ctx.attrColor(if (on) R.attr.accentColor else R.attr.outlineColor))
+                    setStroke(ctx.dp(1), ctx.attrColor(if (on) R.attr.accentColor else R.attr.outlineColor))
                 }
-                minHeight = (48 * d).toInt()
+                minHeight = ctx.dp(48)
                 contentDescription = ctx.resources.getQuantityString(R.plurals.minutes, m, m)
                 isSelected = on
                 setOnClickListener {
@@ -38,7 +37,7 @@ object Ui {
                 }
             }
             row.addView(chip, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f).apply {
-                if (i > 0) marginStart = (8 * d).toInt()
+                if (i > 0) marginStart = ctx.dp(8)
             })
         }
     }

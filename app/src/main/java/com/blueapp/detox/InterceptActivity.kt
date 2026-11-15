@@ -58,7 +58,8 @@ class InterceptActivity : ThemedActivity() {
             onBackInvokedDispatcher.registerOnBackInvokedCallback(OnBackInvokedDispatcher.PRIORITY_DEFAULT) { leave() }
         }
 
-        if (!preview) prefs.bump(Prefs.S_PAUSES)
+        // Only a fresh open counts; a recreate (theme or dark-mode switch) is the same pause.
+        if (!preview && savedInstanceState == null) prefs.bump(Prefs.S_PAUSES)
         val pauses = prefs.stat(Prefs.S_PAUSES)
         val left = prefs.stat(Prefs.S_LEFT)
         findViewById<TextView>(R.id.stats).text =
@@ -83,7 +84,7 @@ class InterceptActivity : ThemedActivity() {
         val col = LinearLayout(this).apply { orientation = LinearLayout.VERTICAL }
         val close = Button(this, null, 0, R.style.Primary).apply {
             text = getString(R.string.close_app, appLabel)
-            setOnClickListener { leave() }
+            setOnClickListener { leave(walkedAway = false) } // used the full session, not a resisted open
         }
         val more = Button(this, null, 0, R.style.Secondary).apply {
             text = getString(R.string.need_more)
@@ -136,19 +137,14 @@ class InterceptActivity : ThemedActivity() {
             GuardService.instance?.startSession(pkg, minutes)
             prefs.bump(Prefs.S_SESSIONS)
             prefs.bump(Prefs.S_MINUTES, minutes)
-            // Bring the app's existing task back exactly where you left it
-            // (it's normally right underneath, this just makes sure on every Android version).
-            packageManager.getLaunchIntentForPackage(pkg)?.let {
-                runCatching { startActivity(it.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }
-            }
         }
-        finish()
+        finish() // the app's own task is right underneath, exactly where you left it
     }
 
-    private fun leave() {
+    private fun leave(walkedAway: Boolean = true) {
         decided = true
         if (!preview) {
-            prefs.bump(Prefs.S_LEFT)
+            if (walkedAway) prefs.bump(Prefs.S_LEFT)
             startActivity(
                 Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME)
                     .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -172,8 +168,6 @@ class InterceptActivity : ThemedActivity() {
         if (!decided && !preview) GuardService.instance?.recheckSoon()
         super.onDestroy()
     }
-
-    private fun dp(v: Int) = (v * resources.displayMetrics.density).toInt()
 
     companion object {
         const val EXTRA_PKG = "pkg"

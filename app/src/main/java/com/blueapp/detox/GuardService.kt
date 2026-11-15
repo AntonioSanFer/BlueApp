@@ -37,6 +37,7 @@ class GuardService : AccessibilityService(), SharedPreferences.OnSharedPreferenc
     /** Last real app in front. */
     private var foreground: String? = null
     private var lastLaunch = 0L
+    private var lastLaunchPkg: String? = null
 
     private val expire = Runnable {
         act(tracker.onExpired(now(), InterceptActivity.isShowing), force = true)
@@ -91,8 +92,10 @@ class GuardService : AccessibilityService(), SharedPreferences.OnSharedPreferenc
         if (d !is SessionTracker.Decision.Pause) return
         cancelTimers()
         val t = now()
-        if (!force && t - lastLaunch < 1200) return // debounce bursts of window events
+        // Debounce bursts of window events from the same app; a different app always gets its pause.
+        if (!force && d.pkg == lastLaunchPkg && t - lastLaunch < 1200) return
         lastLaunch = t
+        lastLaunchPkg = d.pkg
         startActivity(
             Intent(this, InterceptActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)

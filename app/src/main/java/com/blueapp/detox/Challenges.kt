@@ -49,7 +49,7 @@ abstract class Challenge(protected val ctx: Context, protected val level: Int) {
         main.removeCallbacksAndMessages(null)
     }
 
-    protected fun dp(v: Int) = (v * ctx.resources.displayMetrics.density).toInt()
+    protected fun dp(v: Int) = ctx.dp(v)
     protected fun str(id: Int, vararg args: Any) = ctx.getString(id, *args)
 
     protected fun column() = LinearLayout(ctx).apply {
@@ -272,7 +272,9 @@ class Phrase(ctx: Context, level: Int) : Challenge(ctx, level) {
         answerRow(this, numeric = false) { s -> norm(s) == norm(phrase) }
     }
 
-    private fun norm(s: String) = s.lowercase().replace(Regex("[^\\p{L}\\p{N} ]"), "").replace(Regex("\\s+"), " ").trim()
+    private fun norm(s: String) = java.text.Normalizer.normalize(s.lowercase(), java.text.Normalizer.Form.NFD)
+        .replace(Regex("\\p{Mn}+"), "") // "Sé a qué" == "Se a que"
+        .replace(Regex("[^\\p{L}\\p{N} ]"), "").replace(Regex("\\s+"), " ").trim()
 }
 
 class Reverse(ctx: Context, level: Int) : Challenge(ctx, level) {
@@ -309,6 +311,7 @@ class TapOrder(ctx: Context, level: Int) : Challenge(ctx, level) {
         val d = dp(56)
         val spots = scatter(area.width, area.height, d, count)
         var expected = 1
+        var locked = false
         spots.forEachIndexed { i, (x, y) ->
             val n = i + 1
             val dot = TextView(ctx).apply {
@@ -318,13 +321,15 @@ class TapOrder(ctx: Context, level: Int) : Challenge(ctx, level) {
                 setTextColor(ctx.attrColor(R.attr.onAccent2Color))
                 background = ctx.getDrawable(R.drawable.dot)
                 setOnClickListener {
+                    if (locked) return@setOnClickListener
                     if (n == expected) {
                         animate().alpha(0f).scaleX(0.4f).scaleY(0.4f).setDuration(150).start()
                         isEnabled = false
                         expected++
                         if (expected > count) onSolved()
                     } else {
-                        shake(area); main.postDelayed({ place(area) }, 400) // wrong: reshuffle
+                        locked = true // wrong: freeze the board, then reshuffle
+                        shake(area); main.postDelayed({ place(area) }, 400)
                     }
                 }
             }

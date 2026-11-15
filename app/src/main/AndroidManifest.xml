@@ -52,7 +52,7 @@
             android:launchMode="singleTask"
             android:taskAffinity="com.blueapp.detox.intercept"
             android:noHistory="true"
-            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden|uiMode"
+            android:configChanges="orientation|screenSize|screenLayout|smallestScreenSize|keyboard|keyboardHidden"
             android:windowSoftInputMode="adjustResize" />
 
         <service
