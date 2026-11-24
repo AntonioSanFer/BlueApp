@@ -63,7 +63,8 @@ class InterceptActivity : ThemedActivity() {
         if (intent.getBooleanExtra(EXTRA_TIME_UP, false)) {
             showTimeUp(intent.getLongExtra(EXTRA_USED_MS, 0L))
         } else {
-            startChallenge(baseLevel())
+            // Previewing one exercise from Settings shows exactly that one.
+            startChallenge(baseLevel(), if (preview) intent.getStringExtra(EXTRA_KIND) else null)
         }
     }
 
@@ -105,10 +106,11 @@ class InterceptActivity : ThemedActivity() {
         host.addView(col, FrameLayout.LayoutParams(-1, -2, Gravity.BOTTOM))
     }
 
-    private fun startChallenge(level: Int) {
+    private fun startChallenge(level: Int, kind: String? = null) {
         challenge?.dispose()
-        val c = Challenge.random(this, level, prefs.lastKind, prefs.pauseMode)
-        prefs.lastKind = c.kind
+        val c = if (kind != null) Challenge.of(this, kind, level)
+        else Challenge.random(this, level, prefs.lastKind, prefs.exercises)
+        if (kind == null) prefs.lastKind = c.kind
         challenge = c
         showHeading(c.title, c.subtitle)
         c.mount(host) { onPassed() }
@@ -205,6 +207,7 @@ class InterceptActivity : ThemedActivity() {
         const val EXTRA_TIME_UP = "time_up"
         const val EXTRA_USED_MS = "used_ms"
         const val EXTRA_PREVIEW = "preview"
+        const val EXTRA_KIND = "kind"
 
         @Volatile
         private var current: WeakReference<InterceptActivity>? = null

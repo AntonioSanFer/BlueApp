@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
 
-/** Dashboard: status, today's numbers, settings, pause type. */
+/** Dashboard: status, today's numbers, settings, exercise blocks. */
 class MainActivity : ThemedActivity() {
 
     private lateinit var appsValue: TextView
@@ -42,30 +42,9 @@ class MainActivity : ThemedActivity() {
         appsValue = Ui.navRow(settings, getString(R.string.apps), null) { open(AppsActivity::class.java) }
         timeValue = Ui.navRow(settings, getString(R.string.time_options), null) { open(TimeOptionsActivity::class.java) }
         themeValue = Ui.navRow(settings, getString(R.string.theme), null) { open(ThemesActivity::class.java) }
-
-        Ui.segmented(
-            findViewById(R.id.pause_modes),
-            listOf(
-                Prefs.MODE_TIMER to getString(R.string.mode_timer),
-                Prefs.MODE_CHALLENGE to getString(R.string.mode_challenge),
-                Prefs.MODE_BOTH to getString(R.string.mode_both),
-            ),
-            prefs.pauseMode,
-        ) { prefs.pauseMode = it; updateModeHint() }
-        updateModeHint()
     }
 
     private fun open(c: Class<*>) = startActivity(Intent(this, c))
-
-    private fun updateModeHint() {
-        findViewById<TextView>(R.id.pause_mode_hint).setText(
-            when (prefs.pauseMode) {
-                Prefs.MODE_TIMER -> R.string.mode_timer_desc
-                Prefs.MODE_CHALLENGE -> R.string.mode_challenge_desc
-                else -> R.string.mode_both_desc
-            }
-        )
-    }
 
     override fun onResume() {
         super.onResume()
@@ -89,5 +68,6 @@ class MainActivity : ThemedActivity() {
         appsValue.text = Ui.appSummary(this, targets)
         timeValue.text = Ui.timeOptionsSummary(this, prefs.timeOptions)
         themeValue.setText(Themes.current(prefs).name)
+        Ui.exerciseBlocks(findViewById(R.id.exercises), prefs) {}
     }
 }

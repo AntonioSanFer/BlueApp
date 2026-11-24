@@ -30,10 +30,23 @@ class Prefs(context: Context) {
 
     val maxSessionMin: Int get() = timeOptions.max()
 
-    /** Pause style: countdown only, challenges only, or a random mix of both. */
-    var pauseMode: String
-        get() = sp.getString(K_PAUSE_MODE, MODE_BOTH)!!
-        set(v) = sp.edit().putString(K_PAUSE_MODE, v).apply()
+    /**
+     * Which exercises a pause can show. Stored as the ones you turned *off*, so exercises
+     * added in later versions start out on. Never empty.
+     */
+    var exercises: Set<String>
+        get() {
+            val off = sp.getStringSet(K_EXERCISES_OFF, null) ?: legacyOff()
+            return Exercises.ALL.filter { it !in off }.toSet().ifEmpty { Exercises.ALL.toSet() }
+        }
+        set(v) = sp.edit().putStringSet(K_EXERCISES_OFF, Exercises.ALL.filter { it !in v }.toSet()).apply()
+
+    /** Before blocks there was a Timer / Challenge / Both switch; carry that choice over. */
+    private fun legacyOff(): Set<String> = when (sp.getString(K_PAUSE_MODE, null)) {
+        "timer" -> Exercises.ALL.toSet() - "countdown"
+        "challenge" -> setOf("countdown")
+        else -> emptySet()
+    }
 
     var themeId: String
         get() = sp.getString(K_THEME, Themes.DEFAULT)!!
@@ -74,11 +87,8 @@ class Prefs(context: Context) {
         const val K_LAST_KIND = "last_kind"
         const val K_DAY = "day"
         const val K_THEME = "theme"
-        const val K_PAUSE_MODE = "pause_mode"
-
-        const val MODE_TIMER = "timer"
-        const val MODE_CHALLENGE = "challenge"
-        const val MODE_BOTH = "both"
+        const val K_PAUSE_MODE = "pause_mode" // old Timer / Challenge / Both switch, read once for migration
+        const val K_EXERCISES_OFF = "exercises_off"
 
         const val S_PAUSES = "s_pauses"         // times the pause screen appeared
         const val S_LEFT = "s_left"             // times you walked away instead

@@ -5,8 +5,6 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
-import android.graphics.Typeface
-import android.graphics.drawable.GradientDrawable
 import android.net.Uri
 import android.provider.Settings
 import android.text.TextUtils
@@ -67,7 +65,10 @@ object Ui {
     }
 
     /** A row with a title, optional subtitle and a checkbox; tapping anywhere toggles it. */
-    fun checkRow(group: LinearLayout, title: String, sub: String?, checked: Boolean, onToggle: (Boolean) -> Boolean): CheckBox {
+    fun checkRow(
+        group: LinearLayout, title: String, sub: String?, checked: Boolean,
+        trailing: View? = null, onToggle: (Boolean) -> Boolean,
+    ): CheckBox {
         val ctx = group.context
         if (group.childCount > 0) group.addView(divider(ctx))
         val box = CheckBox(ctx).apply { isChecked = checked; isClickable = false; isFocusable = false }
@@ -84,6 +85,7 @@ object Ui {
             background = ctx.getDrawable(R.drawable.row_bg)
             setOnClickListener { if (onToggle(!box.isChecked)) box.isChecked = !box.isChecked }
             addView(texts, LinearLayout.LayoutParams(0, -2, 1f))
+            if (trailing != null) addView(trailing)
             addView(box)
         }
         group.addView(row, LinearLayout.LayoutParams(-1, -2))
@@ -120,40 +122,38 @@ object Ui {
         }
     }
 
-    fun timeOptionsSummary(ctx: Context, options: List<Int>) =
-        ctx.getString(R.string.time_options_summary, options.joinToString(", "))
-
-    // ---------- Segmented control ----------
-
-    /** Equal-width segments in a soft container; the selected one is a raised grey pill. */
-    fun segmented(row: LinearLayout, options: List<Pair<String, String>>, current: String, onPick: (String) -> Unit) {
-        val ctx = row.context
-        row.removeAllViews()
-        row.background = ctx.getDrawable(R.drawable.segment_bg)
-        row.setPadding(ctx.dp(3), ctx.dp(3), ctx.dp(3), ctx.dp(3))
-        options.forEach { (id, label) ->
-            val on = id == current
-            val seg = TextView(ctx).apply {
-                text = label
-                textSize = 14f
-                gravity = Gravity.CENTER
-                typeface = Typeface.create("sans-serif-medium", Typeface.NORMAL)
-                setTextColor(ctx.attrColor(if (on) R.attr.textMain else R.attr.textDim))
-                background = if (on) GradientDrawable().apply {
-                    cornerRadius = ctx.dp(8).toFloat()
-                    setColor(ctx.attrColor(R.attr.surface2Color))
-                } else null
-                minHeight = ctx.dp(40)
-                isSelected = on
-                contentDescription = label
-                setOnClickListener {
-                    onPick(id)
-                    segmented(row, options, id, onPick)
+    /**
+     * The exercise blocks as checkable rows: on = every exercise in it, off = none.
+     * The last row opens the per-exercise screen. Rebuilt by the caller when things change.
+     */
+    fun exerciseBlocks(group: LinearLayout, prefs: Prefs, onChange: () -> Unit) {
+        val ctx = group.context
+        group.removeAllViews()
+        val on = prefs.exercises
+        Exercises.BLOCKS.forEach { (block, kinds) ->
+            val count = kinds.count { it in on }
+            val sub = ctx.getString(Challenge.blockDesc(block)) +
+                if (count in 1 until kinds.size) " · " + ctx.getString(R.string.taps_progress, count, kinds.size) else ""
+            checkRow(group, ctx.getString(Challenge.blockName(block)), sub, count > 0) { want ->
+                val next = if (want) on + kinds else on - kinds.toSet()
+                if (next.isEmpty()) {
+                    Toast.makeText(ctx, R.string.exercises_min, Toast.LENGTH_SHORT).show()
+                    false
+                } else {
+                    prefs.exercises = next
+                    group.post { exerciseBlocks(group, prefs, onChange); onChange() }
+                    true
                 }
             }
-            row.addView(seg, LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f))
+        }
+        navRow(group, ctx.getString(R.string.exercises_choose),
+            ctx.getString(R.string.taps_progress, on.size, Exercises.ALL.size)) {
+            ctx.startActivity(Intent(ctx, ExercisesActivity::class.java))
         }
     }
+
+    fun timeOptionsSummary(ctx: Context, options: List<Int>) =
+        ctx.getString(R.string.time_options_summary, options.joinToString(", "))
 
     // ---------- System settings ----------
 

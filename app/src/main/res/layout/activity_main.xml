@@ -112,29 +112,30 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" />
 
-        <!-- Pause type -->
+        <!-- Exercise blocks -->
         <TextView
             style="@style/Section"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/pause_style" />
+            android:text="@string/exercises" />
 
         <LinearLayout
-            android:id="@+id/pause_modes"
+            android:id="@+id/exercises"
+            style="@style/Group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" />
+            android:orientation="vertical" />
 
         <TextView
-            android:id="@+id/pause_mode_hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
             android:lineSpacingMultiplier="1.2"
+            android:text="@string/exercises_hint"
             android:textColor="?attr/textDim"
             android:textSize="13sp" />
 

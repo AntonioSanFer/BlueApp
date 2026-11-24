@@ -140,26 +140,48 @@ abstract class Challenge(protected val ctx: Context, protected val level: Int) {
         const val MATCH = ViewGroup.LayoutParams.MATCH_PARENT
         const val WRAP = ViewGroup.LayoutParams.WRAP_CONTENT
 
-        private val FACTORIES: List<Pair<String, (Context, Int) -> Challenge>> = listOf(
-            "countdown" to ::Countdown,
-            "math" to ::MathChallenge,
-            "phrase" to ::Phrase,
-            "reverse" to ::Reverse,
-            "taps" to ::TapOrder,
-            "hold" to ::Hold,
-            "count" to ::CountDots,
-            "memory" to ::Memory,
-        )
+        /** One exercise: its id, its name and one-line description for Settings, and how to build it. */
+        class Kind(val id: String, val name: Int, val desc: Int, val make: (Context, Int) -> Challenge)
 
-        /** Random challenge, never the same kind as last time. Countdown is a bit more common: it's the gentlest. */
-        /** [mode] is the user's pause style: [Prefs.MODE_TIMER], [Prefs.MODE_CHALLENGE] or [Prefs.MODE_BOTH]. */
-        fun random(ctx: Context, level: Int, lastKind: String?, mode: String = Prefs.MODE_BOTH): Challenge {
-            if (mode == Prefs.MODE_TIMER) return Countdown(ctx, level) // varies in length and prompt instead
-            val allowed = if (mode == Prefs.MODE_CHALLENGE) FACTORIES.filter { it.first != "countdown" } else FACTORIES
-            val pool = allowed.filter { it.first != lastKind }
-            val weighted = pool.flatMap { if (it.first == "countdown") listOf(it, it) else listOf(it) }
-            return weighted.random().second(ctx, level)
+        val KINDS: Map<String, Kind> = listOf(
+            Kind("countdown", R.string.ex_countdown, R.string.ex_countdown_desc, ::Countdown),
+            Kind("box", R.string.ex_box, R.string.ex_box_desc, ::BoxBreath),
+            Kind("senses", R.string.ex_senses, R.string.ex_senses_desc, ::Senses),
+            Kind("hold", R.string.ex_hold, R.string.ex_hold_desc, ::Hold),
+            Kind("phrase", R.string.ex_phrase, R.string.ex_phrase_desc, ::Phrase),
+            Kind("math", R.string.ex_math, R.string.ex_math_desc, ::MathChallenge),
+            Kind("colors", R.string.ex_colors, R.string.ex_colors_desc, ::ColorWords),
+            Kind("taps", R.string.ex_taps, R.string.ex_taps_desc, ::TapOrder),
+            Kind("count", R.string.ex_count, R.string.ex_count_desc, ::CountDots),
+            Kind("digits", R.string.ex_digits, R.string.ex_digits_desc, ::Memory),
+            Kind("sequence", R.string.ex_sequence, R.string.ex_sequence_desc, ::Sequence),
+            Kind("words", R.string.ex_words, R.string.ex_words_desc, ::Words),
+            Kind("reverse", R.string.ex_reverse, R.string.ex_reverse_desc, ::Reverse),
+        ).associateBy { it.id }
+
+        fun blockName(block: String) = when (block) {
+            Exercises.CALM -> R.string.block_calm
+            Exercises.AGILITY -> R.string.block_agility
+            else -> R.string.block_memory
         }
+
+        fun blockDesc(block: String) = when (block) {
+            Exercises.CALM -> R.string.block_calm_desc
+            Exercises.AGILITY -> R.string.block_agility_desc
+            else -> R.string.block_memory_desc
+        }
+
+        fun of(ctx: Context, kind: String, level: Int): Challenge =
+            (KINDS[kind] ?: KINDS.getValue("countdown")).make(ctx, level)
+
+        /** A random exercise from the ones you have on, never the same kind as last time. */
+        fun random(ctx: Context, level: Int, lastKind: String?, enabled: Set<String>): Challenge =
+            of(ctx, Exercises.pick(enabled, lastKind), level)
+
+        /** Lowercase, no accents, no punctuation: "Sé a qué" == "se a que". */
+        fun norm(s: String) = java.text.Normalizer.normalize(s.lowercase(), java.text.Normalizer.Form.NFD)
+            .replace(Regex("\\p{Mn}+"), "")
+            .replace(Regex("[^\\p{L}\\p{N} ]"), "").replace(Regex("\\s+"), " ").trim()
     }
 }
 
@@ -293,10 +315,6 @@ class Phrase(ctx: Context, level: Int) : Challenge(ctx, level) {
         addView(big("“$phrase”", 20f).apply { setPadding(dp(8), 0, dp(8), 0) })
         answerRow(this, numeric = false) { s -> norm(s) == norm(phrase) }
     }
-
-    private fun norm(s: String) = java.text.Normalizer.normalize(s.lowercase(), java.text.Normalizer.Form.NFD)
-        .replace(Regex("\\p{Mn}+"), "") // "Sé a qué" == "Se a que"
-        .replace(Regex("[^\\p{L}\\p{N} ]"), "").replace(Regex("\\s+"), " ").trim()
 }
 
 class Reverse(ctx: Context, level: Int) : Challenge(ctx, level) {
@@ -463,7 +481,7 @@ class CountDots(ctx: Context, level: Int) : Challenge(ctx, level) {
 
 /** A code flashes for a moment; type it from memory. */
 class Memory(ctx: Context, level: Int) : Challenge(ctx, level) {
-    override val kind = "memory"
+    override val kind = "digits"
     private val len = 4 + level
     override val title = str(R.string.memory_title)
     override val subtitle = str(R.string.memory_sub, len)
@@ -488,6 +506,308 @@ class Memory(ctx: Context, level: Int) : Challenge(ctx, level) {
         }
         field = answerRow(this, numeric = true) { s -> (s == code).also { if (!it) main.post { flash() } } }
         flash()
+    }
+}
+
+// ---------------------------------------------------------------- Calm
+
+/** Box breathing: a dot walks round a square, four seconds a side: in, hold, out, hold. */
+class BoxBreath(ctx: Context, level: Int) : Challenge(ctx, level) {
+    override val kind = "box"
+    override val centered = true
+    private val rounds = intArrayOf(1, 2, 2, 3)[level.coerceIn(0, 3)]
+    override val title = str(R.string.box_title)
+    override val subtitle = str(R.string.box_sub)
+
+    override fun build(): View {
+        val side = dp(200)
+        val d = dp(14)
+        val square = View(ctx).apply {
+            background = GradientDrawable().apply {
+                cornerRadius = dp(6).toFloat()
+                setStroke(dp(1) + dp(1) / 2, ctx.attrColor(R.attr.outlineColor))
+                setColor(Color.TRANSPARENT)
+            }
+        }
+        val dot = View(ctx).apply {
+            background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(ctx.attrColor(R.attr.textMain)) }
+        }
+        val phase = big(str(R.string.breathe_in), 22f)
+        val round = dim(str(R.string.taps_progress, 1, rounds))
+        val center = column().apply {
+            addView(phase)
+            addView(round, LinearLayout.LayoutParams(WRAP, WRAP).apply { topMargin = dp(4) })
+        }
+        val frame = FrameLayout(ctx).apply {
+            addView(square, FrameLayout.LayoutParams(side, side).apply { leftMargin = d / 2; topMargin = d / 2 })
+            addView(center, FrameLayout.LayoutParams(WRAP, WRAP, Gravity.CENTER))
+            addView(dot, FrameLayout.LayoutParams(d, d))
+        }
+        val labels = intArrayOf(R.string.breathe_in, R.string.breath_hold, R.string.breathe_out, R.string.breath_hold)
+        val sideMs = 4000L
+        val total = sideMs * 4 * rounds
+        val start = android.os.SystemClock.uptimeMillis()
+        var shownSide = -1
+        // Timed off the clock, not an animator, so "remove animations" can't skip it.
+        val frameTick = object : Runnable {
+            override fun run() {
+                val t = android.os.SystemClock.uptimeMillis() - start
+                if (t >= total) { onSolved(); return }
+                val step = (t / sideMs).toInt()
+                val s = step % 4
+                val f = (t % sideMs).toFloat() / sideMs
+                val (x, y) = when (s) {
+                    0 -> f * side to 0f
+                    1 -> side.toFloat() to f * side
+                    2 -> (1 - f) * side to side.toFloat()
+                    else -> 0f to (1 - f) * side
+                }
+                dot.translationX = x; dot.translationY = y
+                if (step != shownSide) {
+                    shownSide = step
+                    phase.text = str(labels[s])
+                    round.text = str(R.string.taps_progress, step / 4 + 1, rounds)
+                }
+                main.postDelayed(this, 16)
+            }
+        }
+        main.post(frameTick)
+        return column().apply { addView(frame, LinearLayout.LayoutParams(side + d, side + d)) }
+    }
+}
+
+/** Grounding: name a few things you can see, hear or feel right now. Anything real counts. */
+class Senses(ctx: Context, level: Int) : Challenge(ctx, level) {
+    override val kind = "senses"
+    private val n = 3 + level / 2
+    override val title = str(intArrayOf(R.string.senses_see, R.string.senses_hear, R.string.senses_feel).random(), n)
+    override val subtitle = str(R.string.senses_sub)
+
+    override fun build(): View = column().apply {
+        val fields = (1..n).map { i ->
+            input(numeric = false, hint = i.toString()).apply {
+                textSize = 17f
+                gravity = Gravity.START or Gravity.CENTER_VERTICAL
+                if (i < n) imeOptions = EditorInfo.IME_ACTION_NEXT
+            }
+        }
+        fun submit() {
+            val seen = HashSet<String>()
+            val bad = fields.firstOrNull { f ->
+                val v = norm(f.text.toString())
+                v.count { it.isLetter() } < 2 || !seen.add(v)
+            }
+            if (bad == null) {
+                hideKeyboard(fields.last()); onSolved()
+            } else {
+                shake(bad); bad.requestFocus()
+            }
+        }
+        fields.forEachIndexed { i, f ->
+            addView(f, LinearLayout.LayoutParams(MATCH, WRAP).apply { topMargin = dp(if (i == 0) 4 else 10) })
+        }
+        fields.last().setOnEditorActionListener { _, _, _ -> submit(); true }
+        addView(button(str(R.string.done)).apply { setOnClickListener { submit() } },
+            LinearLayout.LayoutParams(MATCH, WRAP).apply { topMargin = dp(16) })
+        main.postDelayed({ showKeyboard(fields.first()) }, 250)
+    }
+}
+
+// ---------------------------------------------------------------- Agility
+
+/** Stroop test: a colour name printed in another colour. Tap the ink, not the word. */
+class ColorWords(ctx: Context, level: Int) : Challenge(ctx, level) {
+    override val kind = "colors"
+    private val goal = 3 + level
+    override val title = str(R.string.colors_title)
+    override val subtitle = str(R.string.colors_sub, goal)
+    private val names = ctx.resources.getStringArray(R.array.color_names) // red, blue, green, purple
+
+    /** Same four hues, darker on light themes so they stay readable. */
+    private val inks: IntArray =
+        if (Color.luminance(ctx.attrColor(R.attr.bgColor)) > 0.5f)
+            intArrayOf(0xFFC62828.toInt(), 0xFF1E5FC2.toInt(), 0xFF1F7A45.toInt(), 0xFF6E3FB5.toInt())
+        else
+            intArrayOf(0xFFF0716F.toInt(), 0xFF6CA6F2.toInt(), 0xFF5DC08A.toInt(), 0xFFB792F0.toInt())
+
+    override fun build(): View = column().apply {
+        val word = big("", 40f).apply { typeface = android.graphics.Typeface.DEFAULT_BOLD }
+        val progress = dim(str(R.string.taps_progress, 0, goal))
+        val buttons = List(4) { Button(ctx, null, 0, R.style.Secondary) }
+        var streak = 0
+        fun round() {
+            val w = Random.nextInt(4)
+            // Mostly mismatched; sometimes it matches, so "never the word" isn't a shortcut.
+            val ink = if (Random.nextInt(4) == 0) w else (w + 1 + Random.nextInt(3)) % 4
+            word.text = names[w].uppercase()
+            word.setTextColor(inks[ink])
+            val order = (0..3).shuffled()
+            buttons.forEachIndexed { i, b ->
+                val c = order[i]
+                b.text = names[c]
+                b.setOnClickListener {
+                    if (c == ink) streak++ else { streak = 0; shake(word) }
+                    progress.text = str(R.string.taps_progress, streak, goal)
+                    if (streak >= goal) onSolved() else round()
+                }
+            }
+        }
+        addView(word, LinearLayout.LayoutParams(MATCH, WRAP).apply { topMargin = dp(12) })
+        for (r in 0..1) {
+            addView(LinearLayout(ctx).apply {
+                orientation = LinearLayout.HORIZONTAL
+                for (c in 0..1) addView(buttons[r * 2 + c], LinearLayout.LayoutParams(0, WRAP, 1f).apply {
+                    if (c == 1) marginStart = dp(10)
+                })
+            }, LinearLayout.LayoutParams(MATCH, WRAP).apply { topMargin = dp(if (r == 0) 32 else 10) })
+        }
+        addView(progress, LinearLayout.LayoutParams(WRAP, WRAP).apply { topMargin = dp(14) })
+        round()
+    }
+}
+
+// ---------------------------------------------------------------- Memory
+
+/** Squares in a 3×3 grid light up one by one; tap them back in the same order. */
+class Sequence(ctx: Context, level: Int) : Challenge(ctx, level) {
+    override val kind = "sequence"
+    private val len = 3 + level
+    override val title = str(R.string.sequence_title)
+    override val subtitle = str(R.string.sequence_sub, len)
+
+    private val cells = ArrayList<View>()
+    private lateinit var grid: LinearLayout
+    private lateinit var status: TextView
+    private var seq = IntArray(0)
+    private var pos = 0
+    private var accepting = false
+
+    private fun cellBg(lit: Boolean) = GradientDrawable().apply {
+        cornerRadius = dp(12).toFloat()
+        if (lit) setColor(ctx.attrColor(R.attr.textMain))
+        else { setColor(ctx.attrColor(R.attr.surfaceColor)); setStroke(dp(1), ctx.attrColor(R.attr.outlineColor)) }
+    }
+
+    private fun light(i: Int, ms: Long) {
+        cells[i].background = cellBg(true)
+        main.postDelayed({ cells[i].background = cellBg(false) }, ms)
+    }
+
+    private fun play() {
+        accepting = false
+        pos = 0
+        status.text = str(R.string.sequence_watch)
+        val out = IntArray(len)
+        for (k in 0 until len) {
+            var c: Int
+            do c = Random.nextInt(9) while (k > 0 && c == out[k - 1]) // no immediate repeats: they'd look like one flash
+            out[k] = c
+        }
+        seq = out
+        seq.forEachIndexed { k, c -> main.postDelayed({ light(c, 450) }, 700L + k * 700L) }
+        main.postDelayed({
+            accepting = true
+            status.text = str(R.string.sequence_turn, 0, len)
+        }, 700L + len * 700L)
+    }
+
+    private fun tap(i: Int) {
+        if (!accepting) return
+        light(i, 180)
+        if (i == seq[pos]) {
+            pos++
+            status.text = str(R.string.sequence_turn, pos, len)
+            if (pos == len) { accepting = false; main.postDelayed({ onSolved() }, 250) }
+        } else {
+            accepting = false
+            shake(grid)
+            main.postDelayed({ play() }, 800)
+        }
+    }
+
+    override fun build(): View = column().apply {
+        val size = dp(76)
+        val gap = dp(10)
+        grid = LinearLayout(ctx).apply { orientation = LinearLayout.VERTICAL }
+        for (r in 0..2) {
+            val row = LinearLayout(ctx).apply { orientation = LinearLayout.HORIZONTAL }
+            for (c in 0..2) {
+                val i = r * 3 + c
+                val cell = View(ctx).apply {
+                    background = cellBg(false)
+                    setOnClickListener { tap(i) }
+                    contentDescription = (i + 1).toString()
+                }
+                cells += cell
+                row.addView(cell, LinearLayout.LayoutParams(size, size).apply { if (c > 0) marginStart = gap })
+            }
+            grid.addView(row, LinearLayout.LayoutParams(WRAP, WRAP).apply { if (r > 0) topMargin = gap })
+        }
+        status = dim("")
+        addView(grid, LinearLayout.LayoutParams(WRAP, WRAP).apply { topMargin = dp(8) })
+        addView(status, LinearLayout.LayoutParams(WRAP, WRAP).apply { topMargin = dp(16) })
+        play()
+    }
+}
+
+/** A few words for a moment, then pick them out of a list twice as long. */
+class Words(ctx: Context, level: Int) : Challenge(ctx, level) {
+    override val kind = "words"
+    private val n = 3 + level / 2
+    override val title = str(R.string.words_title, n)
+    override val subtitle = str(R.string.words_sub)
+    private val pool = ctx.resources.getStringArray(R.array.words).distinct()
+
+    override fun build(): View = column().apply {
+        val shown = big("", 24f).apply { setLineSpacing(dp(6).toFloat(), 1f) }
+        val list = LinearLayout(ctx).apply { orientation = LinearLayout.VERTICAL }
+        val status = dim("")
+        addView(shown, LinearLayout.LayoutParams(MATCH, WRAP).apply { topMargin = dp(16) })
+        addView(list, LinearLayout.LayoutParams(MATCH, WRAP))
+        addView(status, LinearLayout.LayoutParams(WRAP, WRAP).apply { topMargin = dp(14) })
+
+        lateinit var show: () -> Unit
+        fun ask(seen: List<String>, decoys: List<String>) {
+            shown.visibility = View.GONE
+            list.visibility = View.VISIBLE
+            list.removeAllViews()
+            status.text = str(R.string.words_found, 0, n)
+            var found = 0
+            var locked = false
+            (seen + decoys).shuffled().chunked(2).forEachIndexed { r, pair ->
+                list.addView(LinearLayout(ctx).apply {
+                    orientation = LinearLayout.HORIZONTAL
+                    pair.forEachIndexed { c, w ->
+                        addView(Button(ctx, null, 0, R.style.Secondary).apply {
+                            text = w
+                            setOnClickListener {
+                                if (locked) return@setOnClickListener
+                                if (w in seen) {
+                                    isEnabled = false
+                                    animate().alpha(0.35f).setDuration(150).start()
+                                    found++
+                                    status.text = str(R.string.words_found, found, n)
+                                    if (found == n) { locked = true; main.postDelayed({ onSolved() }, 250) }
+                                } else {
+                                    locked = true // wrong word: new set
+                                    shake(list); main.postDelayed({ show() }, 700)
+                                }
+                            }
+                        }, LinearLayout.LayoutParams(0, WRAP, 1f).apply { if (c == 1) marginStart = dp(10) })
+                    }
+                }, LinearLayout.LayoutParams(MATCH, WRAP).apply { topMargin = dp(if (r == 0) 4 else 10) })
+            }
+        }
+        show = {
+            val picked = pool.shuffled().take(2 * n)
+            val seen = picked.take(n)
+            shown.text = seen.joinToString("\n")
+            shown.visibility = View.VISIBLE
+            list.visibility = View.GONE
+            status.text = str(R.string.words_memorise)
+            main.postDelayed({ ask(seen, picked.drop(n)) }, 1500L + n * 900L)
+        }
+        show()
     }
 }
 

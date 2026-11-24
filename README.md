@@ -5,15 +5,15 @@ Your thumb opens TikTok before you've decided to. BlueApp puts a short, **always
 ## How it works
 
 1. **You open a guarded app** (TikTok, Instagram and YouTube are recommended and pre-selected on first run).
-2. **A pause appears.** It's picked at random each time, and it's never the same kind twice in a row:
-   - breathing countdown (random length)
-   - quick maths
-   - type a phrase
-   - spell a word backwards
-   - tap numbered dots in order (they land in new spots every time)
-   - press and hold for N seconds
-   - count the dots
-   - remember a short code
+2. **A pause appears: a short mental exercise.** Exercises come in three blocks. Each pause picks one of your enabled blocks at random, then an exercise from it, and never shows the same exercise twice in a row:
+
+   | Block | Exercises |
+   |---|---|
+   | **Calm** | breathing countdown (random length), box breathing (in, hold, out, hold), notice around you (name things you can see, hear or feel), press and hold, write an intention |
+   | **Agility** | mental maths, colour words (tap the ink colour, not the word), numbers in order (scattered dots), count the dots |
+   | **Memory** | remember a code, repeat the pattern (squares light up in a 3×3 grid), remember words (spot them in a longer list), spell a word backwards |
+
+   Turn whole blocks on or off from the dashboard, or pick single exercises (and try each one) in **Exercises › Choose exercises**. Keep only the breathing countdown for a timer-only pause.
    Pauses get a little longer the more often you open apps that day. Even the session-length buttons are shuffled, so there's no fixed spot to tap without reading.
 3. **You choose how long you need** from your own time options (up to 4, e.g. 2, 5 and 10 min; set on first run and in Settings › Time options). The longest one is your limit per session.
 4. **When time's up**, the pause screen comes back: close the app, or do a harder challenge for a short extension (1–5 min).
@@ -73,6 +73,8 @@ The release build is signed with the debug key so it installs directly. Use your
 | `GuardService.kt` | Accessibility service: feeds app-switch events to the tracker and opens the pause screen |
 | `SessionTracker.kt` | Pure session rules (grace period, expiry, per-app sessions), unit tested |
 | `InterceptActivity.kt` | The pause screen: challenge → choose minutes → time's up |
-| `Challenges.kt` | The eight randomized challenge types |
+| `Exercises.kt` | The exercise blocks and the picking rules, unit tested |
+| `Challenges.kt` | Every exercise screen, randomized each time |
+| `ExercisesActivity.kt` | Settings › Exercises: turn each one on or off, try it |
 | `OnboardingActivity.kt` | First run: apps → session limit → permissions |
-| `MainActivity.kt` | Dashboard: status, today's stats, apps, limit, preview a pause |
+| `MainActivity.kt` | Dashboard: status, today's stats, settings, exercise blocks, preview a pause |
