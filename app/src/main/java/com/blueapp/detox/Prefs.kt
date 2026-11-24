@@ -30,10 +30,29 @@ class Prefs(context: Context) {
 
     val maxSessionMin: Int get() = timeOptions.max()
 
-    /** Pause style: countdown only, challenges only, or a random mix of both. */
-    var pauseMode: String
-        get() = sp.getString(K_PAUSE_MODE, MODE_BOTH)!!
-        set(v) = sp.edit().putString(K_PAUSE_MODE, v).apply()
+    /**
+     * Which exercises a pause can show. Regular ones are stored as the ones you turned *off*,
+     * so exercises added in later versions start out on; [Exercises.OPT_IN] ones as the ones
+     * you turned *on*. Never empty.
+     */
+    var exercises: Set<String>
+        get() {
+            val off = sp.getStringSet(K_EXERCISES_OFF, null) ?: legacyOff()
+            val optIn = sp.getStringSet(K_EXERCISES_OPT_IN, emptySet())!!
+            return Exercises.ALL.filter { if (it in Exercises.OPT_IN) it in optIn else it !in off }.toSet()
+                .ifEmpty { Exercises.ALL.toSet() - Exercises.OPT_IN }
+        }
+        set(v) = sp.edit()
+            .putStringSet(K_EXERCISES_OFF, Exercises.ALL.filter { it !in Exercises.OPT_IN && it !in v }.toSet())
+            .putStringSet(K_EXERCISES_OPT_IN, Exercises.OPT_IN.filter { it in v }.toSet())
+            .apply()
+
+    /** Before blocks there was a Timer / Challenge / Both switch; carry that choice over. */
+    private fun legacyOff(): Set<String> = when (sp.getString(K_PAUSE_MODE, null)) {
+        "timer" -> Exercises.ALL.toSet() - "countdown"
+        "challenge" -> setOf("countdown")
+        else -> emptySet()
+    }
 
     var themeId: String
         get() = sp.getString(K_THEME, Themes.DEFAULT)!!
@@ -74,11 +93,9 @@ class Prefs(context: Context) {
         const val K_LAST_KIND = "last_kind"
         const val K_DAY = "day"
         const val K_THEME = "theme"
-        const val K_PAUSE_MODE = "pause_mode"
-
-        const val MODE_TIMER = "timer"
-        const val MODE_CHALLENGE = "challenge"
-        const val MODE_BOTH = "both"
+        const val K_PAUSE_MODE = "pause_mode" // old Timer / Challenge / Both switch, read once for migration
+        const val K_EXERCISES_OFF = "exercises_off"
+        const val K_EXERCISES_OPT_IN = "exercises_opt_in"
 
         const val S_PAUSES = "s_pauses"         // times the pause screen appeared
         const val S_LEFT = "s_left"             // times you walked away instead

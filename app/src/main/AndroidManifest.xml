@@ -47,6 +47,10 @@
             android:name=".TimeOptionsActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ExercisesActivity"
+            android:exported="false" />
+
         <!-- The pause screen. Own task + no recents so it can't be swiped back into,
              and config changes are handled in place so rotating doesn't re-roll the challenge. -->
         <activity

@@ -96,17 +96,74 @@
     <string name="theme_sunset">Sunset</string>
     <string name="theme_sunset_desc">Dark warm</string>
 
-    <!-- Pause style -->
-    <string name="pause_style">Pause type</string>
-    <string name="mode_timer">Timer</string>
-    <string name="mode_challenge">Challenge</string>
-    <string name="mode_both">Both</string>
-    <string name="mode_timer_desc">Always a breathing countdown, a different length each time.</string>
-    <string name="mode_challenge_desc">Always a quick challenge, a different one each time.</string>
-    <string name="mode_both_desc">Mixes countdowns and challenges so it never feels the same.</string>
+    <!-- Exercises -->
+    <string name="exercises">Exercises</string>
+    <string name="exercises_choose">Choose exercises</string>
+    <string name="exercises_intro">Turn on the ones you like. Each pause picks one at random, never the same twice in a row.</string>
+    <string name="exercises_hint">Each pause picks a block, then an exercise from it, so it never feels the same.</string>
+    <string name="exercises_min">Keep at least one exercise</string>
+    <string name="try_one">Try</string>
+    <string name="try_named">Try %1$s</string>
+    <string name="done">Done</string>
+
+    <string name="block_calm">Calm</string>
+    <string name="block_calm_desc">Breathing and slowing down</string>
+    <string name="block_agility">Agility</string>
+    <string name="block_agility_desc">Quick thinking and attention</string>
+    <string name="block_memory">Memory</string>
+    <string name="block_memory_desc">Short-term and working memory</string>
+
+    <string name="ex_countdown">Breathing countdown</string>
+    <string name="ex_countdown_desc">Breathe with a circle for a few seconds</string>
+    <string name="ex_box">Box breathing</string>
+    <string name="ex_box_desc">In, hold, out, hold, four seconds each</string>
+    <string name="ex_senses">Notice around you</string>
+    <string name="ex_senses_desc">Name things you can see, hear or feel</string>
+    <string name="ex_hold">Hold</string>
+    <string name="ex_hold_desc">Press and hold without letting go</string>
+    <string name="ex_phrase">Write an intention</string>
+    <string name="ex_phrase_desc">Type a short sentence about why you\'re here</string>
+    <string name="ex_math">Mental maths</string>
+    <string name="ex_math_desc">A quick sum or multiplication</string>
+    <string name="ex_equations">Equations</string>
+    <string name="ex_equations_desc">Harder: solve for x. Off unless you turn it on</string>
+    <string name="ex_colors">Colour words</string>
+    <string name="ex_colors_desc">Tap the ink colour, not the word</string>
+    <string name="ex_taps">Numbers in order</string>
+    <string name="ex_taps_desc">Tap scattered numbers from 1 up</string>
+    <string name="ex_count">Count the dots</string>
+    <string name="ex_count_desc">Count a scattered group</string>
+    <string name="ex_digits">Remember a code</string>
+    <string name="ex_digits_desc">Digits flash, then you type them</string>
+    <string name="ex_sequence">Repeat the pattern</string>
+    <string name="ex_sequence_desc">Squares light up, tap them back in order</string>
+    <string name="ex_words">Remember words</string>
+    <string name="ex_words_desc">Spot the words you saw in a longer list</string>
+    <string name="ex_reverse">Spell backwards</string>
+    <string name="ex_reverse_desc">Keep a word in mind and reverse it</string>
+
+    <string name="box_title">Box breathing</string>
+    <string name="box_sub">Follow the dot. Four seconds each side.</string>
+    <string name="breath_hold">Hold</string>
+    <string name="senses_see">Name %1$d things you can see</string>
+    <string name="senses_hear">Name %1$d things you can hear</string>
+    <string name="senses_feel">Name %1$d things you can feel</string>
+    <string name="senses_sub">Look around first. One per box, anything counts.</string>
+    <string name="equations_title">Solve for x</string>
+    <string name="equations_sub">Work it out in your head.</string>
+    <string name="colors_title">What colour is the ink?</string>
+    <string name="colors_sub">Not the word. %1$d right in a row.</string>
+    <string name="sequence_title">Repeat the pattern</string>
+    <string name="sequence_sub">%1$d squares light up. Tap them in the same order.</string>
+    <string name="sequence_watch">Watch…</string>
+    <string name="sequence_turn">Your turn · %1$d of %2$d</string>
+    <string name="words_title">Remember these %1$d words</string>
+    <string name="words_sub">Then find them in a longer list.</string>
+    <string name="words_memorise">Read them once or twice</string>
+    <string name="words_found">Which did you see? %1$d of %2$d</string>
 
     <string name="point1_title">A pause before you scroll</string>
-    <string name="point1_body">A short countdown or task. It\'s different every time.</string>
+    <string name="point1_body">Breathing, a quick puzzle or a memory game. It\'s different every time.</string>
     <string name="point2_title">A limit you choose</string>
     <string name="point2_body">Pick how long you need. The app closes when it\'s over.</string>
     <string name="point3_title">Stays on your phone</string>
@@ -179,5 +236,25 @@
         <item>sunlight</item>
         <item>thoughtful</item>
         <item>attention</item>
+        <item>river</item>
+        <item>lantern</item>
+        <item>pillow</item>
+        <item>forest</item>
+        <item>candle</item>
+        <item>harbor</item>
+        <item>meadow</item>
+        <item>orange</item>
+        <item>violin</item>
+        <item>blanket</item>
+        <item>compass</item>
+        <item>cloud</item>
+    </string-array>
+
+    <!-- Same order as the ink colours in ColorWords: red, blue, green, purple. -->
+    <string-array name="color_names">
+        <item>red</item>
+        <item>blue</item>
+        <item>green</item>
+        <item>purple</item>
     </string-array>
 </resources>

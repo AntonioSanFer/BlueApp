@@ -88,16 +88,74 @@
     <string name="theme_sunset">Atardecer</string>
     <string name="theme_sunset_desc">Oscuro cálido</string>
 
-    <string name="pause_style">Tipo de pausa</string>
-    <string name="mode_timer">Tiempo</string>
-    <string name="mode_challenge">Reto</string>
-    <string name="mode_both">Ambos</string>
-    <string name="mode_timer_desc">Siempre una cuenta atrás con respiración, de duración distinta cada vez.</string>
-    <string name="mode_challenge_desc">Siempre un reto rápido, distinto cada vez.</string>
-    <string name="mode_both_desc">Mezcla cuentas atrás y retos para que nunca se sienta igual.</string>
+    <!-- Ejercicios -->
+    <string name="exercises">Ejercicios</string>
+    <string name="exercises_choose">Elegir ejercicios</string>
+    <string name="exercises_intro">Activa los que te gusten. Cada pausa elige uno al azar, nunca el mismo dos veces seguidas.</string>
+    <string name="exercises_hint">Cada pausa elige un bloque y luego un ejercicio de ese bloque, para que nunca se sienta igual.</string>
+    <string name="exercises_min">Deja al menos un ejercicio</string>
+    <string name="try_one">Probar</string>
+    <string name="try_named">Probar %1$s</string>
+    <string name="done">Listo</string>
+
+    <string name="block_calm">Calma</string>
+    <string name="block_calm_desc">Respirar y bajar el ritmo</string>
+    <string name="block_agility">Agilidad</string>
+    <string name="block_agility_desc">Pensar rápido y atención</string>
+    <string name="block_memory">Memoria</string>
+    <string name="block_memory_desc">Memoria a corto plazo y de trabajo</string>
+
+    <string name="ex_countdown">Cuenta atrás respirando</string>
+    <string name="ex_countdown_desc">Respira con un círculo unos segundos</string>
+    <string name="ex_box">Respiración cuadrada</string>
+    <string name="ex_box_desc">Inspira, mantén, espira, mantén, cuatro segundos cada uno</string>
+    <string name="ex_senses">Fíjate a tu alrededor</string>
+    <string name="ex_senses_desc">Nombra cosas que ves, oyes o sientes</string>
+    <string name="ex_hold">Mantener pulsado</string>
+    <string name="ex_hold_desc">Pulsa y mantén sin soltar</string>
+    <string name="ex_phrase">Escribe una intención</string>
+    <string name="ex_phrase_desc">Escribe una frase corta sobre por qué entras</string>
+    <string name="ex_math">Cálculo mental</string>
+    <string name="ex_math_desc">Una suma o multiplicación rápida</string>
+    <string name="ex_equations">Ecuaciones</string>
+    <string name="ex_equations_desc">Más difícil: despeja la x. Apagado hasta que lo actives</string>
+    <string name="ex_colors">Palabras de colores</string>
+    <string name="ex_colors_desc">Toca el color de la tinta, no la palabra</string>
+    <string name="ex_taps">Números en orden</string>
+    <string name="ex_taps_desc">Toca números dispersos desde el 1</string>
+    <string name="ex_count">Cuenta los puntos</string>
+    <string name="ex_count_desc">Cuenta un grupo disperso</string>
+    <string name="ex_digits">Recuerda un código</string>
+    <string name="ex_digits_desc">Aparecen unas cifras y luego las escribes</string>
+    <string name="ex_sequence">Repite el patrón</string>
+    <string name="ex_sequence_desc">Se iluminan casillas, tócalas en el mismo orden</string>
+    <string name="ex_words">Recuerda palabras</string>
+    <string name="ex_words_desc">Encuentra las palabras que viste en una lista más larga</string>
+    <string name="ex_reverse">Deletrea al revés</string>
+    <string name="ex_reverse_desc">Retén una palabra y dale la vuelta</string>
+
+    <string name="box_title">Respiración cuadrada</string>
+    <string name="box_sub">Sigue el punto. Cuatro segundos por lado.</string>
+    <string name="breath_hold">Mantén</string>
+    <string name="senses_see">Nombra %1$d cosas que veas</string>
+    <string name="senses_hear">Nombra %1$d cosas que oigas</string>
+    <string name="senses_feel">Nombra %1$d cosas que sientas</string>
+    <string name="senses_sub">Mira a tu alrededor primero. Una por casilla, vale cualquier cosa.</string>
+    <string name="equations_title">Despeja la x</string>
+    <string name="equations_sub">Resuélvelo de cabeza.</string>
+    <string name="colors_title">¿De qué color es la tinta?</string>
+    <string name="colors_sub">No la palabra. %1$d seguidas bien.</string>
+    <string name="sequence_title">Repite el patrón</string>
+    <string name="sequence_sub">Se iluminan %1$d casillas. Tócalas en el mismo orden.</string>
+    <string name="sequence_watch">Mira…</string>
+    <string name="sequence_turn">Tu turno · %1$d de %2$d</string>
+    <string name="words_title">Recuerda estas %1$d palabras</string>
+    <string name="words_sub">Luego encuéntralas en una lista más larga.</string>
+    <string name="words_memorise">Léelas una o dos veces</string>
+    <string name="words_found">¿Cuáles viste? %1$d de %2$d</string>
 
     <string name="point1_title">Una pausa antes del scroll</string>
-    <string name="point1_body">Una cuenta atrás o tarea corta. Cambia cada vez.</string>
+    <string name="point1_body">Respirar, un reto rápido o un juego de memoria. Cambia cada vez.</string>
     <string name="point2_title">Un límite que eliges tú</string>
     <string name="point2_body">Elige cuánto necesitas. La app se cierra al terminar.</string>
     <string name="point3_title">Se queda en tu móvil</string>
@@ -173,5 +231,24 @@
         <item>tranquilo</item>
         <item>paciencia</item>
         <item>caminar</item>
+        <item>río</item>
+        <item>farol</item>
+        <item>almohada</item>
+        <item>bosque</item>
+        <item>vela</item>
+        <item>puerto</item>
+        <item>prado</item>
+        <item>naranja</item>
+        <item>violín</item>
+        <item>manta</item>
+        <item>brújula</item>
+        <item>nube</item>
+    </string-array>
+
+    <string-array name="color_names">
+        <item>rojo</item>
+        <item>azul</item>
+        <item>verde</item>
+        <item>morado</item>
     </string-array>
 </resources>
