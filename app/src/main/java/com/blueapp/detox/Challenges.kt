@@ -150,6 +150,7 @@ abstract class Challenge(protected val ctx: Context, protected val level: Int) {
             Kind("hold", R.string.ex_hold, R.string.ex_hold_desc, ::Hold),
             Kind("phrase", R.string.ex_phrase, R.string.ex_phrase_desc, ::Phrase),
             Kind("math", R.string.ex_math, R.string.ex_math_desc, ::MathChallenge),
+            Kind("equations", R.string.ex_equations, R.string.ex_equations_desc, ::Equations),
             Kind("colors", R.string.ex_colors, R.string.ex_colors_desc, ::ColorWords),
             Kind("taps", R.string.ex_taps, R.string.ex_taps_desc, ::TapOrder),
             Kind("count", R.string.ex_count, R.string.ex_count_desc, ::CountDots),
@@ -298,6 +299,46 @@ class MathChallenge(ctx: Context, level: Int) : Challenge(ctx, level) {
     override fun build(): View = column().apply {
         question = big("", 34f)
         addView(question)
+        next()
+        answerRow(this, numeric = true) { s ->
+            (s.toIntOrNull() == answer).also { if (!it) next() }
+        }
+    }
+}
+
+/** Harder maths: solve a linear equation for x. Always a whole, positive answer. */
+class Equations(ctx: Context, level: Int) : Challenge(ctx, level) {
+    override val kind = "equations"
+    override val title = str(R.string.equations_title)
+    override val subtitle = str(R.string.equations_sub)
+    private lateinit var question: TextView
+    private var answer = 0
+
+    private fun next() {
+        val r = Random
+        val type = when (level) {
+            0 -> r.nextInt(0, 3)
+            1 -> r.nextInt(0, 4)
+            else -> r.nextInt(1, 5)
+        }
+        val (q, x) = when (type) {
+            0 -> { val a = r.nextInt(2, 10); val x = r.nextInt(2, 13); val b = r.nextInt(1, 26); "${a}x + $b = ${a * x + b}" to x }
+            1 -> { val a = r.nextInt(3, 10); val x = r.nextInt(2, 13); val b = r.nextInt(1, a * x); "${a}x − $b = ${a * x - b}" to x }
+            2 -> { val a = r.nextInt(2, 7); val b = r.nextInt(1, 10); val x = b + r.nextInt(1, 11); "$a(x − $b) = ${a * (x - b)}" to x }
+            3 -> { val a = r.nextInt(2, 6); val k = r.nextInt(2, 10); val b = r.nextInt(1, 13); "x/$a + $b = ${k + b}" to a * k }
+            else -> {
+                val a = r.nextInt(4, 10); val c = r.nextInt(1, a); val x = r.nextInt(2, 13); val b = r.nextInt(1, 21)
+                "${a}x + $b = ${if (c == 1) "" else c}x + ${(a - c) * x + b}" to x
+            }
+        }
+        question.text = q
+        answer = x
+    }
+
+    override fun build(): View = column().apply {
+        question = big("", 30f)
+        addView(question)
+        addView(dim("x = ?", 15f), LinearLayout.LayoutParams(WRAP, WRAP).apply { topMargin = dp(6) })
         next()
         answerRow(this, numeric = true) { s ->
             (s.toIntOrNull() == answer).also { if (!it) next() }

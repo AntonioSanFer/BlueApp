@@ -10,7 +10,7 @@ Your thumb opens TikTok before you've decided to. BlueApp puts a short, **always
    | Block | Exercises |
    |---|---|
    | **Calm** | breathing countdown (random length), box breathing (in, hold, out, hold), notice around you (name things you can see, hear or feel), press and hold, write an intention |
-   | **Agility** | mental maths, colour words (tap the ink colour, not the word), numbers in order (scattered dots), count the dots |
+   | **Agility** | mental maths, equations (harder, off until you turn it on: solve for x), colour words (tap the ink colour, not the word), numbers in order (scattered dots), count the dots |
    | **Memory** | remember a code, repeat the pattern (squares light up in a 3×3 grid), remember words (spot them in a longer list), spell a word backwards |
 
    Turn whole blocks on or off from the dashboard, or pick single exercises (and try each one) in **Exercises › Choose exercises**. Keep only the breathing countdown for a timer-only pause.

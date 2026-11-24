@@ -125,6 +125,8 @@
     <string name="ex_phrase_desc">Type a short sentence about why you\'re here</string>
     <string name="ex_math">Mental maths</string>
     <string name="ex_math_desc">A quick sum or multiplication</string>
+    <string name="ex_equations">Equations</string>
+    <string name="ex_equations_desc">Harder: solve for x. Off unless you turn it on</string>
     <string name="ex_colors">Colour words</string>
     <string name="ex_colors_desc">Tap the ink colour, not the word</string>
     <string name="ex_taps">Numbers in order</string>
@@ -147,6 +149,8 @@
     <string name="senses_hear">Name %1$d things you can hear</string>
     <string name="senses_feel">Name %1$d things you can feel</string>
     <string name="senses_sub">Look around first. One per box, anything counts.</string>
+    <string name="equations_title">Solve for x</string>
+    <string name="equations_sub">Work it out in your head.</string>
     <string name="colors_title">What colour is the ink?</string>
     <string name="colors_sub">Not the word. %1$d right in a row.</string>
     <string name="sequence_title">Repeat the pattern</string>

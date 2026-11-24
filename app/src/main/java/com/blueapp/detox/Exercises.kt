@@ -15,11 +15,14 @@ object Exercises {
 
     val BLOCKS: List<Pair<String, List<String>>> = listOf(
         CALM to listOf("countdown", "box", "senses", "hold", "phrase"),
-        AGILITY to listOf("math", "colors", "taps", "count"),
+        AGILITY to listOf("math", "equations", "colors", "taps", "count"),
         MEMORY to listOf("digits", "sequence", "words", "reverse"),
     )
 
     val ALL: List<String> = BLOCKS.flatMap { it.second }
+
+    /** Harder extras that start off; you turn them on yourself. */
+    val OPT_IN: Set<String> = setOf("equations")
 
     fun kindsOf(block: String): List<String> = BLOCKS.firstOrNull { it.first == block }?.second.orEmpty()
 

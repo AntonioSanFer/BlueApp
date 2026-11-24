@@ -135,7 +135,8 @@ object Ui {
             val sub = ctx.getString(Challenge.blockDesc(block)) +
                 if (count in 1 until kinds.size) " · " + ctx.getString(R.string.taps_progress, count, kinds.size) else ""
             checkRow(group, ctx.getString(Challenge.blockName(block)), sub, count > 0) { want ->
-                val next = if (want) on + kinds else on - kinds.toSet()
+                // Turning a block on brings back its regular exercises; opt-in extras stay as they were.
+                val next = if (want) on + (kinds - Exercises.OPT_IN) else on - kinds.toSet()
                 if (next.isEmpty()) {
                     Toast.makeText(ctx, R.string.exercises_min, Toast.LENGTH_SHORT).show()
                     false

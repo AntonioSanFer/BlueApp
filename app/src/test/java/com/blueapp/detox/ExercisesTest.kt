@@ -47,4 +47,9 @@ class ExercisesTest {
         val seen = (1..300).map { Exercises.blockOf(Exercises.pick(Exercises.ALL.toSet(), null, rnd)) }.toSet()
         assertEquals(setOf(Exercises.CALM, Exercises.AGILITY, Exercises.MEMORY), seen)
     }
+
+    @Test fun optInExercisesAreInTheCatalogue() {
+        assertTrue(Exercises.OPT_IN.all { it in Exercises.ALL })
+        assertEquals(Exercises.AGILITY, Exercises.blockOf("equations"))
+    }
 }

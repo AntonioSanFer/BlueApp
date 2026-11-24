@@ -117,6 +117,8 @@
     <string name="ex_phrase_desc">Escribe una frase corta sobre por qué entras</string>
     <string name="ex_math">Cálculo mental</string>
     <string name="ex_math_desc">Una suma o multiplicación rápida</string>
+    <string name="ex_equations">Ecuaciones</string>
+    <string name="ex_equations_desc">Más difícil: despeja la x. Apagado hasta que lo actives</string>
     <string name="ex_colors">Palabras de colores</string>
     <string name="ex_colors_desc">Toca el color de la tinta, no la palabra</string>
     <string name="ex_taps">Números en orden</string>
@@ -139,6 +141,8 @@
     <string name="senses_hear">Nombra %1$d cosas que oigas</string>
     <string name="senses_feel">Nombra %1$d cosas que sientas</string>
     <string name="senses_sub">Mira a tu alrededor primero. Una por casilla, vale cualquier cosa.</string>
+    <string name="equations_title">Despeja la x</string>
+    <string name="equations_sub">Resuélvelo de cabeza.</string>
     <string name="colors_title">¿De qué color es la tinta?</string>
     <string name="colors_sub">No la palabra. %1$d seguidas bien.</string>
     <string name="sequence_title">Repite el patrón</string>
